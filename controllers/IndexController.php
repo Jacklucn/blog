@@ -32,4 +32,11 @@ class IndexController extends Controller
 
         ]);
     }
+
+    public function actionDetail()
+    {
+        return $this->render('detail', [
+
+        ]);
+    }
 }
