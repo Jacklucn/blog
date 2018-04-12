@@ -161,9 +161,9 @@ class Generator extends \yii\gii\Generator
                     return $db->getSchema()->getTableNames();
                 },
             ];
-        } else {
-            return [];
         }
+
+        return [];
     }
 
     /**
@@ -180,7 +180,7 @@ class Generator extends \yii\gii\Generator
      */
     public function stickyAttributes()
     {
-        return array_merge(parent::stickyAttributes(), ['ns', 'db', 'baseClass', 'generateRelations', 'generateLabelsFromComments', 'queryNs', 'queryBaseClass']);
+        return array_merge(parent::stickyAttributes(), ['ns', 'db', 'baseClass', 'generateRelations', 'generateLabelsFromComments', 'queryNs', 'queryBaseClass', 'useTablePrefix', 'generateQuery']);
     }
 
     /**
@@ -195,9 +195,9 @@ class Generator extends \yii\gii\Generator
         $db = $this->getDbConnection();
         if ($db !== null) {
             return $db->tablePrefix;
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     /**
@@ -248,7 +248,7 @@ class Generator extends \yii\gii\Generator
      * @return array the generated properties (property => type)
      * @since 2.0.6
      */
-    private function generateProperties($table)
+    protected function generateProperties($table)
     {
         $properties = [];
         foreach ($table->columns as $column) {
@@ -356,7 +356,8 @@ class Generator extends \yii\gii\Generator
 
         // Unique indexes rules
         try {
-            $uniqueIndexes = $db->getSchema()->findUniqueIndexes($table);
+            $uniqueIndexes = array_merge($db->getSchema()->findUniqueIndexes($table), [$table->primaryKey]);
+            $uniqueIndexes = array_unique($uniqueIndexes, SORT_REGULAR);
             foreach ($uniqueIndexes as $uniqueColumns) {
                 // Avoid validating auto incremental columns
                 if (!$this->isColumnAutoIncremental($table, $uniqueColumns)) {
@@ -645,11 +646,13 @@ class Generator extends \yii\gii\Generator
         $result = [];
         // find all foreign key pairs that have all columns in an unique constraint
         $foreignKeys = array_values($table->foreignKeys);
-        for ($i = 0; $i < count($foreignKeys); $i++) {
+        $foreignKeysCount = count($foreignKeys);
+
+        for ($i = 0; $i < $foreignKeysCount; $i++) {
             $firstColumns = $foreignKeys[$i];
             unset($firstColumns[0]);
 
-            for ($j = $i + 1; $j < count($foreignKeys); $j++) {
+            for ($j = $i + 1; $j < $foreignKeysCount; $j++) {
                 $secondColumns = $foreignKeys[$j];
                 unset($secondColumns[0]);
 

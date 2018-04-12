@@ -1,4 +1,15 @@
 <?php
+/*
+ * This file is part of the phpunit-mock-objects package.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * @covers PHPUnit_Framework_MockObject_Generator
  *
@@ -12,7 +23,7 @@
  * @uses PHPUnit_Framework_MockObject_Stub_Return
  * @uses PHPUnit_Framework_MockObject_Matcher_InvokedCount
  */
-class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
+class Framework_MockObject_GeneratorTest extends TestCase
 {
     /**
      * @var PHPUnit_Framework_MockObject_Generator
@@ -24,11 +35,10 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
         $this->generator = new PHPUnit_Framework_MockObject_Generator;
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
-     */
     public function testGetMockFailsWhenInvalidFunctionNameIsPassedInAsAFunctionToMock()
     {
+        $this->expectException(PHPUnit_Framework_MockObject_RuntimeException::class);
+
         $this->generator->getMock(stdClass::class, [0]);
     }
 
@@ -39,12 +49,11 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(method_exists($mock, 'testFunction'));
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
-     * @expectedExceptionMessage duplicates: "foo, bar, foo" (duplicate: "foo")
-     */
     public function testGetMockGeneratorFails()
     {
+        $this->expectException(PHPUnit_Framework_MockObject_RuntimeException::class);
+        $this->expectExceptionMessage('duplicates: "foo, bar, foo" (duplicate: "foo")');
+
         $this->generator->getMock(stdClass::class, ['foo', 'bar', 'foo']);
     }
 
@@ -103,18 +112,18 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getMockForAbstractClassExpectsInvalidArgumentExceptionDataprovider
-     * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetMockForAbstractClassExpectingInvalidArgumentException($className, $mockClassName)
     {
+        $this->expectException(PHPUnit\Framework\Exception::class);
+
         $this->generator->getMockForAbstractClass($className, [], $mockClassName);
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
-     */
     public function testGetMockForAbstractClassAbstractClassDoesNotExist()
     {
+        $this->expectException(PHPUnit_Framework_MockObject_RuntimeException::class);
+
         $this->generator->getMockForAbstractClass('Tux');
     }
 
@@ -158,11 +167,10 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('SingletonClass', $mock);
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
-     */
     public function testExceptionIsRaisedForMutuallyExclusiveOptions()
     {
+        $this->expectException(PHPUnit_Framework_MockObject_RuntimeException::class);
+
         $this->generator->getMock(stdClass::class, [], [], '', false, true, true, true, true);
     }
 

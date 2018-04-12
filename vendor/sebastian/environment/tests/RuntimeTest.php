@@ -1,12 +1,14 @@
 <?php
 /*
- * This file is part of the Environment package.
+ * This file is part of sebastian/environment.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace SebastianBergmann\Environment;
 
@@ -15,59 +17,95 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \SebastianBergmann\Environment\Runtime
  */
-class RuntimeTest extends TestCase
+final class RuntimeTest extends TestCase
 {
     /**
      * @var \SebastianBergmann\Environment\Runtime
      */
     private $env;
 
-    protected function setUp()
+    protected function setUp()/*: void*/
     {
         $this->env = new Runtime;
     }
 
-    public function testAbilityToCollectCodeCoverageCanBeAssessed()
+    /**
+     * @todo Now that this component is PHP 7-only and uses return type declarations
+     * this test makes even less sense than before
+     */
+    public function testAbilityToCollectCodeCoverageCanBeAssessed()/*: void*/
     {
         $this->assertInternalType('boolean', $this->env->canCollectCodeCoverage());
     }
 
-    public function testBinaryCanBeRetrieved()
+    /**
+     * @todo Now that this component is PHP 7-only and uses return type declarations
+     * this test makes even less sense than before
+     */
+    public function testBinaryCanBeRetrieved()/*: void*/
     {
         $this->assertInternalType('string', $this->env->getBinary());
     }
 
-    public function testCanBeDetected()
+    /**
+     * @todo Now that this component is PHP 7-only and uses return type declarations
+     * this test makes even less sense than before
+     */
+    public function testCanBeDetected()/*: void*/
     {
         $this->assertInternalType('boolean', $this->env->isHHVM());
     }
 
-    public function testCanBeDetected2()
+    /**
+     * @todo Now that this component is PHP 7-only and uses return type declarations
+     * this test makes even less sense than before
+     */
+    public function testCanBeDetected2()/*: void*/
     {
         $this->assertInternalType('boolean', $this->env->isPHP());
     }
 
-    public function testXdebugCanBeDetected()
+    /**
+     * @todo Now that this component is PHP 7-only and uses return type declarations
+     * this test makes even less sense than before
+     */
+    public function testXdebugCanBeDetected()/*: void*/
     {
         $this->assertInternalType('boolean', $this->env->hasXdebug());
     }
 
-    public function testNameAndVersionCanBeRetrieved()
+    /**
+     * @todo Now that this component is PHP 7-only and uses return type declarations
+     * this test makes even less sense than before
+     */
+    public function testNameAndVersionCanBeRetrieved()/*: void*/
     {
         $this->assertInternalType('string', $this->env->getNameWithVersion());
     }
 
-    public function testNameCanBeRetrieved()
+    /**
+     * @todo Now that this component is PHP 7-only and uses return type declarations
+     * this test makes even less sense than before
+     */
+    public function testNameCanBeRetrieved()/*: void*/
     {
         $this->assertInternalType('string', $this->env->getName());
     }
 
-    public function testVersionCanBeRetrieved()
+    /**
+     * @todo Now that this component is PHP 7-only and uses return type declarations
+     * this test makes even less sense than before
+     */
+    public function testVersionCanBeRetrieved()/*: void*/
     {
         $this->assertInternalType('string', $this->env->getVersion());
     }
 
-    public function testVendorUrlCanBeRetrieved()
+    /**
+     * @todo Now that this component is PHP 7-only and uses return type declarations
+     * this test makes even less sense than before
+     */
+    public function testVendorUrlCanBeRetrieved()/*: void*/
     {
         $this->assertInternalType('string', $this->env->getVendorUrl());
     }

@@ -11,10 +11,11 @@
 
 namespace Symfony\Component\EventDispatcher\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Argument\ClosureProxyArgument;
+use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -23,33 +24,26 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RegisterListenersPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
     protected $dispatcherService;
-
-    /**
-     * @var string
-     */
     protected $listenerTag;
-
-    /**
-     * @var string
-     */
     protected $subscriberTag;
 
-    /**
-     * Constructor.
-     *
-     * @param string $dispatcherService Service name of the event dispatcher in processed container
-     * @param string $listenerTag       Tag name used for listener
-     * @param string $subscriberTag     Tag name used for subscribers
-     */
-    public function __construct($dispatcherService = 'event_dispatcher', $listenerTag = 'kernel.event_listener', $subscriberTag = 'kernel.event_subscriber')
+    private $hotPathEvents = array();
+    private $hotPathTagName;
+
+    public function __construct(string $dispatcherService = 'event_dispatcher', string $listenerTag = 'kernel.event_listener', string $subscriberTag = 'kernel.event_subscriber')
     {
         $this->dispatcherService = $dispatcherService;
         $this->listenerTag = $listenerTag;
         $this->subscriberTag = $subscriberTag;
+    }
+
+    public function setHotPathEvents(array $hotPathEvents, $tagName = 'container.hot_path')
+    {
+        $this->hotPathEvents = array_flip($hotPathEvents);
+        $this->hotPathTagName = $tagName;
+
+        return $this;
     }
 
     public function process(ContainerBuilder $container)
@@ -61,8 +55,6 @@ class RegisterListenersPass implements CompilerPassInterface
         $definition = $container->findDefinition($this->dispatcherService);
 
         foreach ($container->findTaggedServiceIds($this->listenerTag, true) as $id => $events) {
-            $def = $container->getDefinition($id);
-
             foreach ($events as $event) {
                 $priority = isset($event['priority']) ? $event['priority'] : 0;
 
@@ -78,7 +70,11 @@ class RegisterListenersPass implements CompilerPassInterface
                     $event['method'] = preg_replace('/[^a-z0-9]/i', '', $event['method']);
                 }
 
-                $definition->addMethodCall('addListener', array($event['event'], new ClosureProxyArgument($id, $event['method']), $priority));
+                $definition->addMethodCall('addListener', array($event['event'], array(new ServiceClosureArgument(new Reference($id)), $event['method']), $priority));
+
+                if (isset($this->hotPathEvents[$event['event']])) {
+                    $container->getDefinition($id)->addTag($this->hotPathTagName);
+                }
             }
         }
 
@@ -103,8 +99,12 @@ class RegisterListenersPass implements CompilerPassInterface
             ExtractingEventDispatcher::$subscriber = $class;
             $extractingDispatcher->addSubscriber($extractingDispatcher);
             foreach ($extractingDispatcher->listeners as $args) {
-                $args[1] = new ClosureProxyArgument($id, $args[1]);
+                $args[1] = array(new ServiceClosureArgument(new Reference($id)), $args[1]);
                 $definition->addMethodCall('addListener', $args);
+
+                if (isset($this->hotPathEvents[$args[0]])) {
+                    $container->getDefinition($id)->addTag('container.hot_path');
+                }
             }
             $extractingDispatcher->listeners = array();
         }

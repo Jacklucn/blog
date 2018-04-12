@@ -180,17 +180,17 @@ Each of the generator properties (like `name`, `address`, and `lorem`) are calle
 ### `Faker\Provider\DateTime`
 
     unixTime($max = 'now')                // 58781813
-    dateTime($max = 'now', $timezone = date_default_timezone_get()) // DateTime('2008-04-25 08:37:17', 'UTC')
-    dateTimeAD($max = 'now', $timezone = date_default_timezone_get()) // DateTime('1800-04-29 20:38:49', 'Europe/Paris')
+    dateTime($max = 'now', $timezone = null) // DateTime('2008-04-25 08:37:17', 'UTC')
+    dateTimeAD($max = 'now', $timezone = null) // DateTime('1800-04-29 20:38:49', 'Europe/Paris')
     iso8601($max = 'now')                 // '1978-12-09T10:10:29+0000'
     date($format = 'Y-m-d', $max = 'now') // '1979-06-09'
     time($format = 'H:i:s', $max = 'now') // '20:49:42'
-    dateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = date_default_timezone_get()) // DateTime('2003-03-15 02:00:49', 'Africa/Lagos')
-    dateTimeInInterval($startDate = '-30 years', $interval = '+ 5 days', $timezone = date_default_timezone_get()) // DateTime('2003-03-15 02:00:49', 'Antartica/Vostok')
-    dateTimeThisCentury($max = 'now', $timezone = date_default_timezone_get())     // DateTime('1915-05-30 19:28:21', 'UTC')
-    dateTimeThisDecade($max = 'now', $timezone = date_default_timezone_get())      // DateTime('2007-05-29 22:30:48', 'Europe/Paris')
-    dateTimeThisYear($max = 'now', $timezone = date_default_timezone_get())        // DateTime('2011-02-27 20:52:14', 'Africa/Lagos')
-    dateTimeThisMonth($max = 'now', $timezone = date_default_timezone_get())       // DateTime('2011-10-23 13:46:23', 'Antarctica/Vostok')
+    dateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = null) // DateTime('2003-03-15 02:00:49', 'Africa/Lagos')
+    dateTimeInInterval($startDate = '-30 years', $interval = '+ 5 days', $timezone = null) // DateTime('2003-03-15 02:00:49', 'Antartica/Vostok')
+    dateTimeThisCentury($max = 'now', $timezone = null)     // DateTime('1915-05-30 19:28:21', 'UTC')
+    dateTimeThisDecade($max = 'now', $timezone = null)      // DateTime('2007-05-29 22:30:48', 'Europe/Paris')
+    dateTimeThisYear($max = 'now', $timezone = null)        // DateTime('2011-02-27 20:52:14', 'Africa/Lagos')
+    dateTimeThisMonth($max = 'now', $timezone = null)       // DateTime('2011-10-23 13:46:23', 'Antarctica/Vostok')
     amPm($max = 'now')                    // 'pm'
     dayOfMonth($max = 'now')              // '04'
     dayOfWeek($max = 'now')               // 'Friday'
@@ -199,6 +199,8 @@ Each of the generator properties (like `name`, `address`, and `lorem`) are calle
     year($max = 'now')                    // '1993'
     century                               // 'VI'
     timezone                              // 'Europe/Paris'
+
+Methods accepting a `$timezone` argument default to `date_default_timezone_get()`. You can pass a custom timezone string to each method, or define a custom timezone for all time methods at once using `$faker::setDefaultTimezone($timezone)`.
 
 ### `Faker\Provider\Internet`
 
@@ -861,6 +863,56 @@ echo $faker->bank; // "Volksbank Stuttgart"
 
 ```
 
+### `Faker\Provider\en_HK\Address`
+
+```php
+<?php
+
+// Generates a fake town name based on the words commonly found in Hong Kong
+echo $faker->town; // "Yuen Long"
+
+// Generates a fake village name based on the words commonly found in Hong Kong
+echo $faker->village; // "O Tau"
+
+// Generates a fake estate name based on the words commonly found in Hong Kong
+echo $faker->estate; // "Ching Lai Court"
+
+```
+
+### `Faker\Provider\en_HK\Phone`
+
+```php
+<?php
+
+// Generates a Hong Kong mobile number (starting with 5, 6 or 9)
+echo $faker->mobileNumber; // "92150087"
+
+// Generates a Hong Kong landline number (starting with 2 or 3)
+echo $faker->landlineNumber; // "32750132"
+
+// Generates a Hong Kong fax number (starting with 7)
+echo $faker->faxNumber; // "71937729"
+
+```
+
+### `Faker\Provider\en_NG\Address`
+
+```php
+<?php
+
+// Generates a random region name
+echo $faker->region; // 'Katsina'
+```
+
+### `Faker\Provider\en_NG\Person`
+
+```php
+<?php
+
+// Generates a random person name
+echo $faker->name; // 'Oluwunmi Mayowa'
+```
+
 ### `Faker\Provider\en_NZ\Phone`
 
 ```php
@@ -876,6 +928,15 @@ echo $faker->tollFreeNumber; // "0800 123 456"
 echo $faker->areaCode; // "03"
 ```
 
+### `Faker\Provider\en_US\Company`
+
+```php
+<?php
+
+// Generate a random Employer Identification Number
+echo $faker->ein; // '12-3456789'
+```
+
 ### `Faker\Provider\en_US\Payment`
 
 ```php
@@ -883,6 +944,15 @@ echo $faker->areaCode; // "03"
 
 echo $faker->bankAccountNumber;  // '51915734310'
 echo $faker->bankRoutingNumber;  // '212240302'
+```
+
+### `Faker\Provider\en_US\Person`
+
+```php
+<?php
+
+// Generates a random Social Security Number
+echo $faker->ssn; // '123-45-6789'
 ```
 
 ### `Faker\Provider\en_ZA\Company`
@@ -901,6 +971,9 @@ echo $faker->companyNumber; // 1999/789634/01
 
 // Generates a random national identification number
 echo $faker->idNumber; // 6606192211041
+
+// Generates a random valid licence code
+echo $faker->licenceCode; // EB
 ```
 
 ### `Faker\Provider\en_ZA\PhoneNumber`
@@ -922,6 +995,9 @@ echo $faker->mobileNumber; // 082 123 5555
 
 // Generates a Documento Nacional de Identidad (DNI) number
 echo $faker->dni; // '77446565E'
+
+// Generates a random valid licence code
+echo $faker->licenceCode; // B
 ```
 
 ### `Faker\Provider\es_ES\Payment`
@@ -992,6 +1068,24 @@ echo $faker->vat;           // "BE 0123456789" - Belgian Value Added Tax number
 echo $faker->vat(false);    // "BE0123456789" - unspaced Belgian Value Added Tax number
 ```
 
+### `Faker\Provider\es_VE\Person`
+
+```php
+<?php
+
+// Generate a Cédula de identidad number, you can pass one argument to add separator
+echo $faker->nationalId; // 'V11223344'
+```
+
+### `Faker\Provider\es_VE\Company`
+
+```php
+<?php
+
+// Generates a R.I.F. number, you can pass one argument to add separators
+echo $faker->taxpayerIdentificationNumber; // 'J1234567891'
+```
+
 ### `Faker\Provider\fr_FR\Address`
 
 ```php
@@ -1008,6 +1102,9 @@ $faker->department; // array('18' => 'Cher');
 
 // Generates a random region
 echo $faker->region; // "Saint-Pierre-et-Miquelon"
+
+// Generates a random appartement,stair
+echo $faker->secondaryAddress; // "Bat. 961"
 ```
 
 ### `Faker\Provider\fr_FR\Company`
@@ -1020,6 +1117,15 @@ echo $faker->siren; // 082 250 104
 
 // Generates a random SIRET number
 echo $faker->siret; // 347 355 708 00224
+```
+
+### `Faker\Provider\fr_FR\Payment`
+
+```php
+<?php
+
+// Generates a random VAT
+echo $faker->vat; // FR 12 123 456 789
 ```
 
 ### `Faker\Provider\fr_FR\Person`
@@ -1199,6 +1305,15 @@ echo $faker->vat;           // "BE 0123456789" - Belgian Value Added Tax number
 echo $faker->vat(false);    // "BE0123456789" - unspaced Belgian Value Added Tax number
 ```
 
+### `Faker\Provider\nl_BE\Person`
+
+```php
+<?php
+
+echo $faker->rrn();         // "83051711784" - Belgian Rijksregisternummer
+echo $faker->rrn('female'); // "50032089858" - Belgian Rijksregisternummer for a female
+```
+
 ### `Faker\Provider\nl_NL\Company`
 
 ```php
@@ -1208,7 +1323,15 @@ echo $faker->vat; // "NL123456789B01" - Dutch Value Added Tax number
 echo $faker->btw; // "NL123456789B01" - Dutch Value Added Tax number (alias)
 ```
 
-### `Faker\Provider\no_NO\Payment`
+### `Faker\Provider\nl_NL\Person`
+
+```php
+<?php
+
+echo $faker->idNumber; // "111222333" - Dutch Personal identification number (BSN)
+```
+
+### `Faker\Provider\nb_NO\Payment`
 
 ```php
 <?php
@@ -1308,6 +1431,7 @@ echo $faker->name; // 'Sr. Luis Adriano Sepúlveda Filho'
 echo $faker->cpf;        // '145.343.345-76'
 echo $faker->cpf(false); // '45623467866'
 echo $faker->rg;         // '84.405.736-3'
+echo $faker->rg(false);  // '844057363'
 ```
 
 ### `Faker\Provider\pt_BR\Company`
@@ -1383,6 +1507,12 @@ echo $faker->premiumRatePhoneNumber; // "0900123456"
 
 // Generates a Russian bank name (based on list of real russian banks)
 echo $faker->bank; // "ОТП Банк"
+
+//Generate a Russian Tax Payment Number for Company
+echo $faker->inn; //  7813540735
+
+//Generate a Russian Tax Code for Company
+echo $faker->kpp; // 781301001
 ```
 
 ### `Faker\Provider\sv_SE\Payment`
@@ -1466,6 +1596,7 @@ echo $faker->VAT; //23456789
 * [pattern-lab/plugin-php-faker](https://github.com/pattern-lab/plugin-php-faker): Pattern Lab is a Styleguide, Component Library, and Prototyping tool. This creates unique content each time Pattern Lab is generated.
 * [guidocella/eloquent-populator](https://github.com/guidocella/eloquent-populator): Adapter for Laravel's Eloquent ORM.
 * [tamperdata/exiges](https://github.com/tamperdata/exiges): Faker provider for generating random temperatures
+* [jzonta/FakerRestaurant](https://github.com/jzonta/FakerRestaurant): Faker for Food and Beverage names generate
 
 ## License
 
