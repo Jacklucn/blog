@@ -6,8 +6,6 @@ class DateTime extends Base
 {
     protected static $century = array('I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI');
 
-    protected static $defaultTimezone = null;
-
     protected static function getMaxTimestamp($max = 'now')
     {
         if (is_numeric($max)) {
@@ -38,7 +36,7 @@ class DateTime extends Base
      * Get a datetime object for a date between January 1, 1970 and now
      *
      * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
-     * @param string $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     * @param string $timezone time zone in which the date time should be set, default to result of `date_default_timezone_get`
      * @example DateTime('2005-08-16 20:39:21')
      * @return \DateTime
      * @see http://php.net/manual/en/timezones.php
@@ -48,7 +46,7 @@ class DateTime extends Base
     {
         return static::setTimezone(
             new \DateTime('@' . static::unixTime($max)),
-            $timezone
+            (null === $timezone ? date_default_timezone_get() : $timezone)
         );
     }
 
@@ -56,7 +54,7 @@ class DateTime extends Base
      * Get a datetime object for a date between January 1, 001 and now
      *
      * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
-     * @param string $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     * @param string $timezone time zone in which the date time should be set, default to result of `date_default_timezone_get`
      * @example DateTime('1265-03-22 21:15:52')
      * @return \DateTime
      * @see http://php.net/manual/en/timezones.php
@@ -67,7 +65,7 @@ class DateTime extends Base
         $min = (PHP_INT_SIZE>4 ? -62135597361 : -PHP_INT_MAX);
         return static::setTimezone(
             new \DateTime('@' . mt_rand($min, static::getMaxTimestamp($max))),
-            $timezone
+            (null === $timezone ? date_default_timezone_get() : $timezone)
         );
     }
 
@@ -115,7 +113,7 @@ class DateTime extends Base
      *
      * @param \DateTime|string $startDate Defaults to 30 years ago
      * @param \DateTime|string $endDate   Defaults to "now"
-     * @param string $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     * @param string $timezone time zone in which the date time should be set, default to result of `date_default_timezone_get`
      * @example DateTime('1999-02-02 11:42:52')
      * @return \DateTime
      * @see http://php.net/manual/en/timezones.php
@@ -134,7 +132,7 @@ class DateTime extends Base
 
         return static::setTimezone(
             new \DateTime('@' . $timestamp),
-            $timezone
+            (null === $timezone ? date_default_timezone_get() : $timezone)
         );
     }
 
@@ -145,7 +143,7 @@ class DateTime extends Base
      *
      * @param string $date      Defaults to 30 years ago
      * @param string $interval  Defaults to 5 days after
-     * @param string $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     * @param string $timezone time zone in which the date time should be set, default to result of `date_default_timezone_get`
      * @example dateTimeInInterval('1999-02-02 11:42:52', '+ 5 days')
      * @return \DateTime
      * @see http://php.net/manual/en/timezones.php
@@ -164,13 +162,13 @@ class DateTime extends Base
         return static::dateTimeBetween(
             $begin,
             $end,
-            $timezone
+            (null === $timezone ? date_default_timezone_get() : $timezone)
         );
     }
 
     /**
      * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
-     * @param string $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     * @param string $timezone time zone in which the date time should be set, default to result of `date_default_timezone_get`
      * @example DateTime('1964-04-04 11:02:02')
      * @return \DateTime
      */
@@ -181,7 +179,7 @@ class DateTime extends Base
 
     /**
      * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
-     * @param string $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     * @param string $timezone time zone in which the date time should be set, default to result of `date_default_timezone_get`
      * @example DateTime('2010-03-10 05:18:58')
      * @return \DateTime
      */
@@ -192,7 +190,7 @@ class DateTime extends Base
 
     /**
      * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
-     * @param string $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     * @param string $timezone time zone in which the date time should be set, default to result of `date_default_timezone_get`
      * @example DateTime('2011-09-19 09:24:37')
      * @return \DateTime
      */
@@ -203,7 +201,7 @@ class DateTime extends Base
 
     /**
      * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
-     * @param string $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     * @param string $timezone time zone in which the date time should be set, default to result of `date_default_timezone_get`
      * @example DateTime('2011-10-05 12:51:46')
      * @return \DateTime
      */
@@ -300,33 +298,6 @@ class DateTime extends Base
      */
     private static function setTimezone(\DateTime $dt, $timezone)
     {
-        return $dt->setTimezone(new \DateTimeZone(static::resolveTimezone($timezone)));
-    }
-
-    /**
-     * Sets default time zone.
-     *
-     * @param string $timezone
-     *
-     * @return void
-     */
-    public static function setDefaultTimezone($timezone = null)
-    {
-        static::$defaultTimezone = $timezone;
-    }
-
-    /**
-     * Gets default time zone.
-     *
-     * @return string
-     */
-    public static function getDefaultTimezone()
-    {
-        return static::$defaultTimezone;
-    }
-
-    private static function resolveTimezone($timezone)
-    {
-        return ((null === $timezone) ? ((null === static::$defaultTimezone) ? date_default_timezone_get() : static::$defaultTimezone) : $timezone);
+        return $dt->setTimezone(new \DateTimeZone($timezone));
     }
 }

@@ -442,11 +442,16 @@ class Table
 
     /**
      * fill rows that contains rowspan > 1.
+     *
+     * @throws InvalidArgumentException
      */
     private function fillNextRows(array $rows, int $line): array
     {
         $unmergedRows = array();
         foreach ($rows[$line] as $column => $cell) {
+            if (null !== $cell && !$cell instanceof TableCell && !is_scalar($cell) && !(is_object($cell) && method_exists($cell, '__toString'))) {
+                throw new InvalidArgumentException(sprintf('A cell must be a TableCell, a scalar or an object implementing __toString, %s given.', gettype($cell)));
+            }
             if ($cell instanceof TableCell && $cell->getRowspan() > 1) {
                 $nbLines = $cell->getRowspan() - 1;
                 $lines = array($cell);
@@ -637,18 +642,11 @@ class Table
             ->setCellHeaderFormat('%s')
         ;
 
-        $box = (new TableStyle())
-            ->setHorizontalBorderChar('─')
-            ->setVerticalBorderChar('│')
-            ->setCrossingChar('┼')
-        ;
-
         return array(
             'default' => new TableStyle(),
             'borderless' => $borderless,
             'compact' => $compact,
             'symfony-style-guide' => $styleGuide,
-            'box' => $box,
         );
     }
 

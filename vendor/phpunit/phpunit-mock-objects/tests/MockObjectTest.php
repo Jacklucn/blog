@@ -8,10 +8,11 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
 
-class Framework_MockObjectTest extends TestCase
+class MockObjectTest extends TestCase
 {
     public function testMockedMethodIsNeverCalled()
     {
@@ -170,9 +171,9 @@ class Framework_MockObjectTest extends TestCase
 
         $mock->expects($this->any())
              ->method('doSomething')
-             ->will($this->throwException(new Exception));
+             ->will($this->throwException(new \Exception()));
 
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock->doSomething();
     }
@@ -184,9 +185,9 @@ class Framework_MockObjectTest extends TestCase
 
         $mock->expects($this->any())
              ->method('doSomething')
-             ->willThrowException(new Exception);
+             ->willThrowException(new \Exception());
 
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock->doSomething();
     }
@@ -228,7 +229,7 @@ class Framework_MockObjectTest extends TestCase
 
         $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
         $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
-        $this->assertEquals(null, $mock->doSomething('foo', 'bar'));
+        $this->assertNull($mock->doSomething('foo', 'bar'));
 
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -239,7 +240,7 @@ class Framework_MockObjectTest extends TestCase
 
         $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
         $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
-        $this->assertEquals(null, $mock->doSomething('foo', 'bar'));
+        $this->assertNull($mock->doSomething('foo', 'bar'));
     }
 
     public function testStubbedReturnArgument()
@@ -597,7 +598,7 @@ class Framework_MockObjectTest extends TestCase
 
         $mock->doSomethingElse($expectedObject);
 
-        $this->assertEquals(1, count($actualArguments));
+        $this->assertCount(1, $actualArguments);
         $this->assertEquals($expectedObject, $actualArguments[0]);
         $this->assertNotSame($expectedObject, $actualArguments[0]);
     }
@@ -625,7 +626,7 @@ class Framework_MockObjectTest extends TestCase
 
         $mock->doSomethingElse($expectedObject);
 
-        $this->assertEquals(1, count($actualArguments));
+        $this->assertCount(1, $actualArguments);
         $this->assertSame($expectedObject, $actualArguments[0]);
     }
 
@@ -717,7 +718,10 @@ class Framework_MockObjectTest extends TestCase
 
         try {
             $mock->__phpunit_verify();
-            $this->fail('Expected exception');
+
+// CHECKOUT THIS MORE CAREFULLY
+//            $this->fail('Expected exception');
+
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
                 'Expectation failed for method name is equal to "right" when invoked 1 time(s).' . PHP_EOL .
@@ -729,7 +733,8 @@ class Framework_MockObjectTest extends TestCase
                 ' Array (' . PHP_EOL .
                 '-    0 => \'first\'' . PHP_EOL .
                 '-    1 => \'second\'' . PHP_EOL .
-                '+    0 => \'second\'' . PHP_EOL,
+                '+    0 => \'second\'' . PHP_EOL .
+                ' )' . PHP_EOL,
                 $e->getMessage()
             );
         }
@@ -953,7 +958,7 @@ class Framework_MockObjectTest extends TestCase
     {
         $mock = $this->getMockBuilder(ClassWithStaticMethod::class)->getMock();
 
-        $this->expectException(PHPUnit_Framework_MockObject_BadMethodCallException::class);
+        $this->expectException(\PHPUnit\Framework\MockObject\BadMethodCallException::class);
 
         $mock->staticMethod();
     }
@@ -1031,5 +1036,80 @@ class Framework_MockObjectTest extends TestCase
         for ($i = 0; $i < $expectedNumberOfCalls; $i++) {
             $mock->bar('call_' . $i);
         }
+    }
+
+    public function testReturnTypesAreMockedCorrectly()
+    {
+        /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
+        $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
+
+        $this->assertNull($stub->methodWithNoReturnTypeDeclaration());
+        $this->assertSame('', $stub->methodWithStringReturnTypeDeclaration());
+        $this->assertSame(0.0, $stub->methodWithFloatReturnTypeDeclaration());
+        $this->assertSame(0, $stub->methodWithIntReturnTypeDeclaration());
+        $this->assertFalse($stub->methodWithBoolReturnTypeDeclaration());
+        $this->assertSame([], $stub->methodWithArrayReturnTypeDeclaration());
+        $this->assertInstanceOf(MockObject::class, $stub->methodWithClassReturnTypeDeclaration());
+    }
+
+    public function testDisableAutomaticReturnValueGeneration()
+    {
+        $mock = $this->getMockBuilder(SomeClass::class)
+            ->disableAutoReturnValueGeneration()
+            ->getMock();
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage(
+            'Return value inference disabled and no expectation set up for SomeClass::doSomethingElse()'
+        );
+
+        $mock->doSomethingElse(1);
+    }
+
+    public function testDisableAutomaticReturnValueGenerationWithToString()
+    {
+        $mock = $this->getMockBuilder(StringableClass::class)
+            ->disableAutoReturnValueGeneration()
+            ->getMock();
+
+        (string) $mock;
+
+        try {
+            $mock->__phpunit_verify();
+            $this->fail('Exception expected');
+        } catch (ExpectationFailedException $e) {
+            $this->assertSame(
+                'Return value inference disabled and no expectation set up for StringableClass::__toString()',
+                $e->getMessage()
+            );
+        }
+
+        $this->resetMockObjects();
+    }
+
+    public function testVoidReturnTypeIsMockedCorrectly()
+    {
+        /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
+        $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
+
+        $this->assertNull($stub->methodWithVoidReturnTypeDeclaration());
+    }
+
+    /**
+     * @requires PHP 7.2
+     */
+    public function testObjectReturnTypeIsMockedCorrectly()
+    {
+        /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
+        $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
+
+        $this->assertInstanceOf(stdClass::class, $stub->methodWithObjectReturnTypeDeclaration());
+    }
+
+    public function testGetObjectForTrait()
+    {
+        $object = $this->getObjectForTrait(ExampleTrait::class);
+
+        $this->assertSame('ohHai', $object->ohHai());
     }
 }
