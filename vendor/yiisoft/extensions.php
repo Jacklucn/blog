@@ -48,4 +48,13 @@ return array (
       '@yii/faker' => $vendorDir . '/yiisoft/yii2-faker',
     ),
   ),
+  'yiichina/yii2-simditor' => 
+  array (
+    'name' => 'yiichina/yii2-simditor',
+    'version' => '0.3.0.0',
+    'alias' => 
+    array (
+      '@yiichina/simditor' => $vendorDir . '/yiichina/yii2-simditor',
+    ),
+  ),
 );

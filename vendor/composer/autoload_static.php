@@ -7,8 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInitcd01f707bbf817f05ec3907aba669a90
 {
     public static $files = array (
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
@@ -18,6 +18,7 @@ class ComposerStaticInitcd01f707bbf817f05ec3907aba669a90
     public static $prefixLengthsPsr4 = array (
         'y' => 
         array (
+            'yiichina\\simditor\\' => 18,
             'yii\\swiftmailer\\' => 16,
             'yii\\gii\\' => 8,
             'yii\\faker\\' => 10,
@@ -79,6 +80,10 @@ class ComposerStaticInitcd01f707bbf817f05ec3907aba669a90
     );
 
     public static $prefixDirsPsr4 = array (
+        'yiichina\\simditor\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiichina/yii2-simditor',
+        ),
         'yii\\swiftmailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-swiftmailer',

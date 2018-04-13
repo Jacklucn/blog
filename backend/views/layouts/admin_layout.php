@@ -21,17 +21,44 @@ use yii\helpers\Url;
     <!-- MetisMenu CSS -->
     <link href="<?= Url::to('@web/css/admin/metisMenu.min.css') ?>" rel="stylesheet">
 
-    <!-- Timeline CSS -->
-    <link href="<?= Url::to('@web/css/admin/timeline.css') ?>" rel="stylesheet">
-
+    <?php
+    $path = \Yii::$app->request->pathInfo;
+    if ($path == 'admin/tables') {
+        ?>
+        <!-- Timeline CSS -->
+        <link href="<?= Url::to('@web/css/admin/timeline.css') ?>" rel="stylesheet">
+        <!-- Morris Charts CSS -->
+        <link href="<?= Url::to('@web/css/admin/morris.css') ?>" rel="stylesheet">
+        <?php
+    }
+    ?>
     <!-- Custom CSS -->
     <link href="<?= Url::to('@web/css/admin/startmin.css') ?>" rel="stylesheet">
 
-    <!-- Morris Charts CSS -->
-    <link href="<?= Url::to('@web/css/admin/morris.css') ?>" rel="stylesheet">
-
     <!-- Custom Fonts -->
     <link href="<?= Url::to('@web/css/admin/font-awesome.min.css') ?>" rel="stylesheet" type="text/css">
+
+    <?php
+    $path = \Yii::$app->request->pathInfo;
+    if ($path == 'admin/tables') {
+        ?>
+        <!-- DataTables CSS -->
+        <link href="<?= Url::to('@web/css/admin/dataTables/dataTables.bootstrap.css') ?>" rel="stylesheet">
+        <!-- DataTables Responsive CSS -->
+        <link href="<?= Url::to('@web/css/admin/dataTables/dataTables.responsive.css') ?>" rel="stylesheet">
+        <?php
+    }
+    ?>
+
+    <!-- simditor CSS -->
+    <?php
+    $path = \Yii::$app->request->pathInfo;
+    if ($path == 'admin/forms') {
+        ?>
+        <link rel="stylesheet" type="text/css" href="<?= Url::to('@web/simditor/site/assets/styles/simditor.css') ?>"/>
+        <?php
+    }
+    ?>
 
     <?= \yii\bootstrap\Html::csrfMetaTags() ?>
 
@@ -49,7 +76,7 @@ use yii\helpers\Url;
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">Startmin</a>
+            <a class="navbar-brand" href="<?= Url::to(['admin/index']) ?>"> 管理后台</a>
         </div>
 
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -60,7 +87,7 @@ use yii\helpers\Url;
         </button>
 
         <ul class="nav navbar-nav navbar-left navbar-top-links">
-            <li><a href="#"><i class="fa fa-home fa-fw"></i> Website</a></li>
+            <li><a href="https://www.jacklucn.com"><i class="fa fa-home fa-fw"></i> 网站首页</a></li>
         </ul>
 
         <ul class="nav navbar-right navbar-top-links">
@@ -120,15 +147,19 @@ use yii\helpers\Url;
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> secondtruth <b class="caret"></b>
+                    <i class="fa fa-user fa-fw"></i> <?= Yii::$app->user->identity->username ?> <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                    <li><a href="#"><i class="fa fa-user fa-fw"></i> 个人信息</a>
                     </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> 账号设置</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li>
+                        <a href="<?= Url::to(['admin/logout']) ?>">
+                            <i class="fa fa-sign-out fa-fw"></i>
+                            退出登录
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -138,104 +169,39 @@ use yii\helpers\Url;
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                            <span class="input-group-btn">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                </span>
-                        </div>
-                        <!-- /input-group -->
+                    <li>
+                        <a href="<?= Url::to(['admin/index']) ?>" class="active">
+                            <i class="fa fa-dashboard fa-fw"></i>
+                            首页
+                        </a>
                     </li>
                     <li>
-                        <a href="index.html" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="<?= Url::to(['admin/tables']) ?>">
+                            <i class="fa fa-table fa-fw"></i>
+                            文章列表
+                        </a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="flot.html">Flot Charts</a>
-                            </li>
-                            <li>
-                                <a href="morris.html">Morris.js Charts</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
+                        <a href="<?= Url::to(['admin/category']) ?>">
+                            <i class="fa fa-table fa-fw"></i>
+                            分类列表
+                        </a>
                     </li>
                     <li>
-                        <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
+                        <a href="<?= Url::to(['admin/forms']) ?>">
+                            <i class="fa fa-edit fa-fw"></i>
+                            发布文章
+                        </a>
                     </li>
                     <li>
-                        <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
+                        <a href="<?= Url::to(['admin/blank']) ?>">
+                            <i class="fa fa-files-o fa-fw"></i>
+                            Blank Page
+                        </a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="panels-wells.html">Panels and Wells</a>
-                            </li>
-                            <li>
-                                <a href="buttons.html">Buttons</a>
-                            </li>
-                            <li>
-                                <a href="notifications.html">Notifications</a>
-                            </li>
-                            <li>
-                                <a href="typography.html">Typography</a>
-                            </li>
-                            <li>
-                                <a href="icons.html"> Icons</a>
-                            </li>
-                            <li>
-                                <a href="grid.html">Grid</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span
-                                    class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="#">Second Level Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Second Level Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Third Level <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                </ul>
-                                <!-- /.nav-third-level -->
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="blank.html">Blank Page</a>
-                            </li>
-                            <li>
-                                <a href="login.html">Login Page</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
+                        <a href="<?= Url::to(['admin/morris']) ?>blank.html"><i class="fa fa-wrench fa-fw"></i> Blank
+                            Page</a>
                     </li>
                 </ul>
             </div>
@@ -254,9 +220,68 @@ use yii\helpers\Url;
     <script src="<?= Url::to('@web/js/metisMenu.min.js') ?>"></script>
 
     <!-- Morris Charts JavaScript -->
-    <script src="<?= Url::to('@web/js/raphael.min.js') ?>"></script>
-    <script src="<?= Url::to('@web/js/morris.min.js') ?>"></script>
-    <script src="<?= Url::to('@web/js/morris-data.js') ?>"></script>
+    <?php
+    $path = \Yii::$app->request->pathInfo;
+    if ($path == 'admin/index') {
+        ?>
+        <script src="<?= Url::to('@web/js/raphael.min.js') ?>"></script>
+        <script src="<?= Url::to('@web/js/morris.min.js') ?>"></script>
+        <script src="<?= Url::to('@web/js/morris-data.js') ?>"></script>
+        <?php
+    }
+    ?>
+
+    <!-- DataTables JavaScript -->
+    <?php
+    $path = \Yii::$app->request->pathInfo;
+    if ($path == 'admin/tables') {
+        ?>
+        <script src="<?= Url::to('@web/js/dataTables/jquery.dataTables.min.js') ?>"></script>
+        <script src="<?= Url::to('@web/js/dataTables/dataTables.bootstrap.min.js') ?>"></script>
+        <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').DataTable({
+                    responsive: true
+                });
+            });
+        </script>
+        <?php
+    }
+    ?>
+
+    <!-- simditor JavaScript -->
+    <?php
+    $path = \Yii::$app->request->pathInfo;
+    if ($path == 'admin/forms') {
+        ?>
+        <script type="text/javascript" src="<?= Url::to('@web/simditor/site/assets/scripts/module.js') ?>"></script>
+        <script type="text/javascript" src="<?= Url::to('@web/simditor/site/assets/scripts/hotkeys.js') ?>"></script>
+        <script type="text/javascript" src="<?= Url::to('@web/simditor/site/assets/scripts/uploader.js') ?>"></script>
+        <script type="text/javascript" src="<?= Url::to('@web/simditor/site/assets/scripts/simditor.js') ?>"></script>
+        <!-- simditor-mark JavaScript -->
+        <script src="<?= Url::to('@web/simditor-mark/lib/simditor-mark.js') ?>"></script>
+        <!-- simditor-autosave JavaScript -->
+        <script src="<?= Url::to('@web/simditor-autosave/lib/simditor-autosave.js') ?>"></script>
+        <script type="application/javascript">
+            var editor = new Simditor({
+                textarea: $('#editor'),
+                //optional options
+                toolbar: [
+                    'mark', 'title', 'bold', 'italic', 'underline', 'strikethrough', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', 'image', 'link', 'hr', 'indent', 'outdent', 'alignment'
+                ],
+                upload: {
+                    url: 'ImgUpload.action', //文件上传的接口地址
+                    params: null, //键值对,指定文件上传接口的额外参数,上传的时候随文件一起提交
+                    fileKey: 'fileDataFileName', //服务器端获取文件数据的参数名
+                    connectionCount: 3,
+                    leaveConfirm: '正在上传文件'
+                }
+            });
+        </script>
+        <?php
+    }
+    ?>
 
     <!-- Custom Theme JavaScript -->
     <script src="<?= Url::to('@web/js/startmin.js') ?>"></script>
