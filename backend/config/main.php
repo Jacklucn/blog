@@ -45,4 +45,6 @@ return [
         ],
     ],
     'params' => $params,
+    'defaultRoute' => 'admin',
+    'homeUrl' => 'login'
 ];
