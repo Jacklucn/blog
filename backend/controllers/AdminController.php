@@ -10,7 +10,9 @@ namespace backend\controllers;
 
 
 use backend\models\Category;
+use Codeception\Lib\Interfaces\Db;
 use common\models\LoginForm;
+use yii\data\Pagination;
 use yii\web\Controller;
 
 class AdminController extends Controller
@@ -97,12 +99,30 @@ class AdminController extends Controller
     }
 
     /**
-     * category list
+     * category
      * @return string
      */
     public function actionCategory()
     {
-        return $this->render('category');
+        $model = new Category();
+        if (\Yii::$app->request->isPost) {
+            $request = \Yii::$app->request;
+            $session = \Yii::$app->session;
+            if ($model->load($request->post()) && $model->save()) {
+                $session->setFlash('success', '添加分类成功！');
+                return $this->redirect(['category']);
+            } else {
+                $session->setFlash('error', '添加分类失败！');
+                return $this->redirect(['category']);
+            }
+        }
+        $page = new Pagination(['totalCount' => $model::find()->count()]);
+        $list = $model::find()->offset($page->offset)->limit($page->limit)->asArray()->all();
+        return $this->render('category', [
+            'model' => $model,
+            'list' => $list,
+            'page' => $page
+        ]);
     }
 
     /**
@@ -121,22 +141,5 @@ class AdminController extends Controller
     public function actionBlank()
     {
         return $this->render('blank');
-    }
-
-    /**
-     * @return \yii\web\Response
-     */
-    public function actionAddCategory()
-    {
-        $request = \Yii::$app->request;
-        $session = \Yii::$app->session;
-        if ($request->isPost) {
-            $model = new Category();
-            if ($model->load($request->post()) && $model->save()) {
-                $session->addFlash('success', '添加分类标签成功！');
-                return $this->redirect(['category']);
-            }
-        }
-        return $this->redirect(['category']);
     }
 }

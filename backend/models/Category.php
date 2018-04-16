@@ -18,10 +18,9 @@ class Category extends ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required', 'message' => '分类名不能为空！'],
+            [['name', 'created_at', 'updated_at'], 'required'],
             ['name', 'string', 'length' => [1, 6]],
-            ['created_at', 'default', 'value' => time()],
-            ['updated_at', 'default', 'value' => time()]
+            ['name', 'unique', 'targetClass' => '\backend\models\Category', 'message' => '已存在！'],
         ];
     }
 }

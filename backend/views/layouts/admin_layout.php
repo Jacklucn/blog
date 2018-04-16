@@ -4,6 +4,7 @@
 use yii\helpers\Url;
 
 ?>
+<?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,6 +71,7 @@ use yii\helpers\Url;
     <![endif]-->
 </head>
 <body>
+<?php $this->beginBody() ?>
 
 <div id="wrapper">
 
@@ -287,4 +289,6 @@ use yii\helpers\Url;
     <script src="<?= Url::to('@web/js/startmin.js') ?>"></script>
 
 </body>
+<?php $this->endBody() ?>
 </html>
+<?php $this->endPage() ?>
