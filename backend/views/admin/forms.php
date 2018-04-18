@@ -17,49 +17,33 @@
                     <i class="fa fa-edit fa-fw"></i> 发布文章
                 </li>
             </ol>
+            <?= \common\widgets\Alert::widget() ?>
+            <?php $form = \yii\bootstrap\ActiveForm::begin() ?>
+            <?= $form->field($model, 'title')->textInput(['class' => 'form-control'])->label('文章标题:') ?>
+            <?= $form->field($model, 'summary')->textInput(['class' => 'form-control'])->label('文章摘要:') ?>
+            <?= $form->field($model, 'sort')->textInput(['class' => 'form-control', 'type' => 'number', 'value' => 99])->label('排序（排序规则1-99，小的在前面，不填则默认99）:') ?>
+            <div class="form-group">
+                <label>请选择分类:</label><br>
+                <?php foreach ($category_list as $item) : ?>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" value="<?= $item['id'] ?>" name="category_ids[]"><?= $item['name'] ?>
+                    </label>
+                <?php endforeach; ?>
+            </div>
 
-            <form role="form" action="{:U('Index/addMaster')}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>文章内容:</label>
+                <textarea id="editor" placeholder="Balabala" data-autosave="editor-content" class="form-control"
+                          name="Article[content]"></textarea>
+            </div>
 
-                <div class="form-group">
-                    <label>文章标题:</label>
-                    <input class="form-control" name="master_name" placeholder="">
-                </div>
+            <div class="form-group">
+                <label>请选择封面图:</label>
+                <input type="file" name="cover_image">
+            </div>
 
-                <div class="form-group">
-                    <label>文章摘要:</label>
-                    <input class="form-control" name="first_pinyin" placeholder="">
-                </div>
-
-                <div class="form-group">
-                    <label>排序:</label>
-                    <input class="form-control" name="sort" placeholder="排序规则1-99 小的在前面（不填则默认99）" type="number"
-                           value="99" onfocus="if(value == 99){value = ''}"
-                           onblur="if(value < 1 || value > 99){value = 99}">
-                </div>
-
-                <div class="form-group">
-                    <label>请选择分类:</label><br>
-                    <foreach name="tag_lists" item="list">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" value="{$list.id}" name="tag_id[]">{$list.tag_name}
-                        </label>
-                    </foreach>
-                </div>
-
-                <div class="form-group">
-                    <label>文章内容:</label>
-                    <textarea id="editor" placeholder="Balabala" data-autosave="editor-content"
-                              class="form-control"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>请选择封面图:</label>
-                    <input type="file" name="cover_image">
-                </div>
-
-                <button type="submit" class="btn btn-primary">确认提交</button>
-
-            </form>
+            <button type="submit" class="btn btn-primary">确认提交</button>
+            <?php \yii\bootstrap\ActiveForm::end() ?>
 
         </div>
         <!-- /.col-lg-12 -->

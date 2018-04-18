@@ -16,6 +16,7 @@
                     <i class="fa fa-table"></i> 文章列表
                 </li>
             </ol>
+            <?= \common\widgets\Alert::widget() ?>
             <form role="form" action="#">
                 <div class="form-group input-group">
                     <input type="text" class="form-control" name="key_word" placeholder="关键字">
@@ -48,41 +49,34 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>@fat</td>
-                        <td>@fat</td>
-                        <td>@fat</td>
-                        <td>@fat</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                        <td>@twitter</td>
-                        <td>@twitter</td>
-                        <td>@twitter</td>
-                        <td>@twitter</td>
-                        <td>@twitter</td>
-                    </tr>
+                    <?php foreach ($list as $item): ?>
+                        <tr>
+                            <td><?= $item['id'] ?></td>
+                            <td><?= $item['title'] ?></td>
+                            <td><?= $item['cover_image'] ?></td>
+                            <td>
+                                <?php foreach ($item->category as $category): ?>
+                                    <?= $category->category_name->name . ' ' ?>
+                                <?php endforeach; ?>
+                            </td>
+                            <td><?= $item['read_count'] ?></td>
+                            <td><?= $item['sort'] ?></td>
+                            <td><?= $item['status'] ?></td>
+                            <td><?= $item['created_at'] ?></td>
+                            <td><?= $item['updated_at'] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
+                <div class="pagination">
+                    <?= \yii\widgets\LinkPager::widget([
+
+                        'pagination' => $pages,
+                        'firstPageLabel' => '首页',
+                        'lastPageLabel' => '尾页',
+                        'hideOnSinglePage' => false,
+                    ]); ?>
+                </div>
             </div>
             <!-- /.table-responsive -->
         </div>

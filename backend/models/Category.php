@@ -18,9 +18,20 @@ class Category extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'created_at', 'updated_at'], 'required'],
-            ['name', 'string', 'length' => [1, 6]],
+            [['name'], 'required'],
+            ['name', 'string', 'length' => [1, 10]],
             ['name', 'unique', 'targetClass' => '\backend\models\Category', 'message' => '已存在！'],
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function afterValidate()
+    {
+        parent::afterValidate();
+        $this->created_at = time();
+        $this->updated_at = time();
+        return true;
     }
 }

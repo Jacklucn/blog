@@ -21,8 +21,6 @@
                     <input name="_csrf-frontend" type="hidden" id="_csrf-frontend"
                            value="<?= Yii::$app->request->csrfToken ?>">
                     <input type="text" class="form-control" name="Category[name]" placeholder="请输入标签名字">
-                    <input name="Category[created_at]" type="hidden" value="<?= time() ?>">
-                    <input name="Category[updated_at]" type="hidden" value="<?= time() ?>">
                     <span class="input-group-btn">
                         <button class="btn btn-primary" type="submit" id="add-category">添加分类</button>
                     </span>
@@ -56,6 +54,15 @@
                     <?php endforeach; ?>
                     </tbody>
                 </table>
+                <div class="pagination">
+                    <?= \yii\widgets\LinkPager::widget([
+
+                        'pagination' => $pages,
+                        'firstPageLabel' => '首页',
+                        'lastPageLabel' => '尾页',
+                        'hideOnSinglePage' => false,
+                    ]); ?>
+                </div>
             </div>
             <!-- /.table-responsive -->
         </div>

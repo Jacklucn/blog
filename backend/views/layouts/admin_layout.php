@@ -149,7 +149,15 @@ use yii\helpers\Url;
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> <?= Yii::$app->user->identity->username ?> <b class="caret"></b>
+                    <i class="fa fa-user fa-fw"></i>
+                    <?php if (Yii::$app->user->isGuest) { ?>
+                        <script type="application/javascript">
+                            window.location = 'http://localhost/blog/backend/web/admin/login'
+                        </script>
+                    <?php } else { ?>
+                        <?= Yii::$app->user->identity->username ?>
+                    <?php } ?>
+                    <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li><a href="#"><i class="fa fa-user fa-fw"></i> 个人信息</a>
@@ -190,7 +198,7 @@ use yii\helpers\Url;
                         </a>
                     </li>
                     <li>
-                        <a href="<?= Url::to(['admin/forms']) ?>">
+                        <a href="<?= Url::to(['admin/forms']) ?>" class='nav-tag'>
                             <i class="fa fa-edit fa-fw"></i>
                             发布文章
                         </a>
@@ -287,6 +295,15 @@ use yii\helpers\Url;
 
     <!-- Custom Theme JavaScript -->
     <script src="<?= Url::to('@web/js/startmin.js') ?>"></script>
+
+    <!-- 侧边栏当前选中效果 -->
+    <script type="application/javascript">
+        var url = "<?=Yii::$app->request->url?>";
+        var current_url = url.substring(url.lastIndexOf('/') + 1, url.length);
+        if (current_url === 'forms') {
+            $('.nav-tag').css('background-color', '#e7e7e7')
+        }
+    </script>
 
 </body>
 <?php $this->endBody() ?>
