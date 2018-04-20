@@ -4,6 +4,7 @@
 use yii\helpers\Url;
 
 ?>
+<?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -31,6 +32,7 @@ use yii\helpers\Url;
 </head>
 
 <body>
+<?php $this->beginBody() ?>
 <div id="mobile-navbar" class="mobile-navbar">
     <div class="mobile-header-logo">
         <a href="<?= Url::to(['index/index']) ?>" class="logo">Jacklucn</a>
@@ -130,4 +132,6 @@ use yii\helpers\Url;
 <script type="text/javascript" src="<?= \yii\helpers\Url::to('@web/js/bootstrap.js') ?>"></script>
 
 </body>
+<?php $this->endBody() ?>
 </html>
+<?php $this->endPage() ?>
