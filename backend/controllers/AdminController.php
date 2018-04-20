@@ -187,4 +187,12 @@ class AdminController extends Controller
     {
         return $this->render('blank');
     }
+
+    /**
+     * @return string
+     */
+    public function actionError()
+    {
+        return $this->render('error');
+    }
 }

@@ -10,7 +10,7 @@
         <div class="col-lg-12">
             <ol class="breadcrumb">
                 <li>
-                    <i class="fa fa-dashboard"></i> <a href="{:U('index/index')}">首页</a>
+                    <i class="fa fa-dashboard"></i> <a href="<?= \yii\helpers\Url::to(['admin/index']) ?>">首页</a>
                 </li>
                 <li class="active">
                     <i class="fa fa-table"></i> 分类列表
@@ -41,6 +41,7 @@
                         <th>name</th>
                         <th>created_at</th>
                         <th>updated_at</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,6 +51,11 @@
                             <td><?= $item['name'] ?></td>
                             <td><?= date("Y-m-d H:i:s", $item['created_at']) ?></td>
                             <td><?= date("Y-m-d H:i:s", $item['updated_at']) ?></td>
+                            <td>
+                                <a class="btn btn-default" onClick="delcfm('deleteTag?id={$list.id}')">
+                                    删除
+                                </a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>

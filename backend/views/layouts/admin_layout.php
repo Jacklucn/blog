@@ -220,6 +220,27 @@ use yii\helpers\Url;
 
     <?= $content; ?>
 
+    <!-- 信息删除确认 -->
+    <div class="modal fade" id="delcfmModel">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body">
+                    <p>您确认要执行该操作吗？</p>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="url"/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <a onclick="urlSubmit()" class="btn btn-success" data-dismiss="modal">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="<?= Url::to('@web/js/jquery.min.js') ?>"></script>
 
@@ -289,9 +310,7 @@ use yii\helpers\Url;
                 }
             });
         </script>
-        <?php
-    }
-    ?>
+    <?php } ?>
 
     <!-- Custom Theme JavaScript -->
     <script src="<?= Url::to('@web/js/startmin.js') ?>"></script>
@@ -303,6 +322,30 @@ use yii\helpers\Url;
         if (current_url === 'forms') {
             $('.nav-tag').css('background-color', '#e7e7e7')
         }
+    </script>
+
+    <!-- 操作确认框 -->
+    <script type="application/javascript">
+        function delcfm(url) {
+            $('#url').val(url);//给会话中的隐藏属性URL赋值
+            $('#delcfmModel').modal();
+        }
+
+        function urlSubmit() {
+            var url = $.trim($("#url").val());//获取会话中的隐藏属性URL
+            var url = 'https://x.masterspace.cn/index.php/Admin/Index/' + url;
+            // var url = 'http://127.0.0.1/masterspace/index.php/Admin/index/' + url;
+            window.location.href = url;
+        }
+    </script>
+
+    <!-- 调整页面高度用的 -->
+    <script type="application/javascript">
+        // $(window).on("load resize",function(){
+        // var h=window.innerHeight||document.body.clientHeight||document.documentElement.clientHeight;
+        //        var h=$(window).height();
+        //             $("#page-wrapper").css("min-height",h);
+        //         });
     </script>
 
 </body>

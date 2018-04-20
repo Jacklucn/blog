@@ -46,6 +46,7 @@
                         <th>status</th>
                         <th>created_at</th>
                         <th>updated_at</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -53,7 +54,7 @@
                         <tr>
                             <td><?= $item['id'] ?></td>
                             <td><?= $item['title'] ?></td>
-                            <td><?= $item['cover_image'] ?></td>
+                            <td><img src="<?= $item['cover_image'] ?>" alt="" style="width: 50px;height: 50px;"></td>
                             <td>
                                 <?php foreach ($item->category as $category): ?>
                                     <?= $category->category_name->name . ' ' ?>
@@ -61,9 +62,28 @@
                             </td>
                             <td><?= $item['read_count'] ?></td>
                             <td><?= $item['sort'] ?></td>
-                            <td><?= $item['status'] ?></td>
+                            <td>
+                                <?php if ($item['status'] == 1): ?>
+                                    显示
+                                <?php else: ?>
+                                    不显示
+                                <?php endif; ?>
+                            </td>
                             <td><?= $item['created_at'] ?></td>
                             <td><?= $item['updated_at'] ?></td>
+                            <td>
+                                <a class="btn btn-default"
+                                   href="{:U('index/getCaseDetail',['id' => $list['id']])}">详情</a>
+                                <a class="btn btn-default" href="{:U('index/updateCase',['id' => $list['id']])}">编辑</a>
+                                <?php if ($item['status'] == 1){ ?>
+                                <a class="btn btn-default" onClick="delcfm('deleteCase?id={$list.id}&status=2')">
+                                    <?php echo '隐藏';
+                                    }else{ ?>
+                                    <a class="btn btn-default"
+                                       onClick="delcfm('deleteCase?id={$list.id}&status=1')">                                                               <?php echo '显示';
+                                        } ?>
+                                    </a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
