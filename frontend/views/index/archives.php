@@ -14,7 +14,7 @@
                     <h2 class="archive-year"><?= $item->year ?></h2>
                 </div>
                 <?php
-                $model = new \backend\models\Article();
+                $model = new \common\models\Article();
                 $list = $model::find()
                     ->select('id,title,created_at')
                     ->where(['status' => 1, 'year' => $item->year])

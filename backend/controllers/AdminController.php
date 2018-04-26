@@ -9,9 +9,9 @@
 namespace backend\controllers;
 
 
-use backend\models\Article;
-use backend\models\ArticleCategoryAccess;
-use backend\models\Category;
+use common\models\Article;
+use common\models\ArticleCategoryAccess;
+use common\models\Category;
 use common\models\LoginForm;
 use yii\data\Pagination;
 use yii\web\Controller;

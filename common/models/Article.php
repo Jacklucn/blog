@@ -6,7 +6,7 @@
  * Time: 下午1:32
  */
 
-namespace backend\models;
+namespace common\models;
 
 
 use yii\db\ActiveRecord;
@@ -43,5 +43,13 @@ class Article extends ActiveRecord
     public function getCategory()
     {
         return $this->hasMany(ArticleCategoryAccess::className(), ['article_id' => 'id'])->select('article_id,category_id');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comment::className(), ['article_id' => 'id']);
     }
 }

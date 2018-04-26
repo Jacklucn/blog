@@ -2,7 +2,7 @@
 /* @var $content string */
 
 use yii\helpers\Url;
-
+\frontend\assets\AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -12,20 +12,13 @@ use yii\helpers\Url;
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-    <meta http-equiv="Cache-Control" content="no-transform"/>
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-
-    <meta name="description" content="记录成长，分享生活与技术的点滴"/>
-
-    <meta name="keywords" content="Ahonn, Ahonn's Blog, 前端，JavaScript，Vim, 编程"/>
+    <meta name="keywords" content="Jacklucn, Jacklucn's Blog, 后端，PHP，编程"/>
 
     <?= \yii\helpers\Html::csrfMetaTags() ?>
 
     <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=2.6.0"/>
 
-    <link rel="canonical" href="http://www.ahonn.me/"/>
-
+    <link rel="canonical" href="https://www.jacklucn.com/"/>
     <link rel="stylesheet" type="text/css" href="<?= Url::to('@web/css/style.css') ?>"/>
 
     <title> Jacklucn </title>
@@ -68,7 +61,7 @@ use yii\helpers\Url;
 
     <header id="header" class="header">
         <div class="logo-wrapper">
-            <a href="/." class="logo">Jacklucn</a>
+            <a href="<?= Url::to(['index/index']) ?>" class="logo">Jacklucn</a>
         </div>
         <nav class="site-navbar">
             <ul id="menu" class="menu">
@@ -111,21 +104,6 @@ use yii\helpers\Url;
         <i class="iconfont icon-up"></i>
     </div>
 </div>
-<script type="text/javascript">
-    var disqus_config = function () {
-        this.page.url = 'http://www.ahonn.me/about/index.html';
-        this.page.identifier = 'about/index.html';
-        this.page.title = '关于我';
-    };
-    (function () {
-        var d = document, s = d.createElement('script');
-
-        s.src = '//ahonn.disqus.com/embed.js';
-
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
 <script type="text/javascript" src="<?= \yii\helpers\Url::to('@web/js/jquery-3.1.1.min.js') ?>"></script>
 <script type="text/javascript" src="<?= \yii\helpers\Url::to('@web/js/slideout.js') ?>"></script>
 <script type="text/javascript" src="<?= \yii\helpers\Url::to('@web/js/even.js') ?>"></script>
