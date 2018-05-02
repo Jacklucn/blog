@@ -35,48 +35,6 @@
                 <?php endforeach; ?>
             <?php endforeach; ?>
 
-            <!--            <div class="collection-title">-->
-            <!--                <h2 class="archive-year">2016</h2>-->
-            <!--            </div>-->
-            <!---->
-            <!--            <div class="archive-post">-->
-            <!--                <span class="archive-post-time">-->
-            <!--                    12-15-->
-            <!--                </span>-->
-            <!--                <span class="archive-post-title">-->
-            <!--                    <a href="/2016/12/15/create-a-hexo-theme-from-scratch/" class="archive-post-link">-->
-            <!--                        从零开始制作 Hexo 主题-->
-            <!--                    </a>-->
-            <!--                </span>-->
-            <!--            </div>-->
-            <!---->
-            <!--            <div class="collection-title">-->
-            <!--                <h2 class="archive-year">2015</h2>-->
-            <!--            </div>-->
-            <!---->
-            <!---->
-            <!--            <div class="archive-post">-->
-            <!--                <span class="archive-post-time">-->
-            <!--                    12-31-->
-            <!--                </span>-->
-            <!--                <span class="archive-post-title">-->
-            <!--                    <a href="/2015/12/31/2015-summary/" class="archive-post-link">-->
-            <!--                        2015 总结-->
-            <!--                    </a>-->
-            <!--                </span>-->
-            <!--            </div>-->
-            <!---->
-            <!--            <div class="archive-post">-->
-            <!--                <span class="archive-post-time">-->
-            <!--                    12-21-->
-            <!--                </span>-->
-            <!--                <span class="archive-post-title">-->
-            <!--                    <a href="/2015/12/21/how-can-i-prevent-sql-injection-in-php/" class="archive-post-link">-->
-            <!--                        在 PHP 中如何预防 SQL 注入-->
-            <!--                    </a>-->
-            <!--                </span>-->
-            <!--            </div>-->
-
         </section>
         <nav class="pagination">
         </nav>

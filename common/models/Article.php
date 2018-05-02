@@ -50,6 +50,6 @@ class Article extends ActiveRecord
      */
     public function getComments()
     {
-        return $this->hasMany(Comment::className(), ['article_id' => 'id']);
+        return $this->hasMany(Comment::className(), ['article_id' => 'id'])->orderBy(['created_at' => SORT_DESC]);
     }
 }

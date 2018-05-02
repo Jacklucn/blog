@@ -82,17 +82,22 @@
     </div>
 
     <div class="comments" id="comments" style="border-top: 1px solid #e6e6e6;">
+        <div id="alert" class="alert"></div>
         <div class="comments">
             <div class="comment-wrap">
                 <div class="comment-block">
-                    <?php $form = \yii\bootstrap\ActiveForm::begin() ?>
-                    <?= \yii\helpers\Html::activeHiddenInput($model,'article_id',['value' => $article->id]) ?>
+                    <?php $form = \yii\bootstrap\ActiveForm::begin([
+                        'action' => \yii\helpers\Url::to(['index/comment']),
+//                        'enableAjaxValidation' => true,
+//                        'validationUrl' => \yii\helpers\Url::to(['index/comment-validate'])
+                    ]) ?>
+                    <?= \yii\helpers\Html::activeHiddenInput($model, 'article_id', ['value' => $article->id]) ?>
                     <?= $form->field($model, 'nickname')->inline(true)->textInput(['class' => 'form-control'])->label('* Nickname') ?>
                     <?= $form->field($model, 'email')->textInput(['class' => 'form-control'])->label('* email') ?>
                     <?= $form->field($model, 'url')->textInput(['class' => 'form-control']) ?>
                     <?= $form->field($model, 'content')->textarea(['rows' => '4', 'cols' => '30'])->label('* content') ?>
                     <div class="form-group">
-                        <input id="contact-submit" type="submit" value="submit"
+                        <input id="comment-submit" type="submit" value="发表评论"
                                class="button button-pill button-primary contact-submit">
                     </div>
                     <?php \yii\bootstrap\ActiveForm::end() ?>
@@ -104,14 +109,18 @@
                     <div class="comment-wrap">
                         <div class="photo">
                             <div class="avatar"
-                                 style="background-image: url(<?= 'http://www.gravatar.com/avatar/' . md5($item->email) . '?s=32' ?>)"></div>
+                                 style="background-image: url(<?= 'http://www.gravatar.com/avatar/' . md5($item->email) . '?s=32' ?>)">
+                            </div>
                         </div>
                         <div class="comment-block">
+                            <span><?= $item->nickname ?>：</span>
                             <p class="comment-text"><?= $item->content ?></p>
                             <div class="bottom-comment">
                                 <div class="comment-date"><?= date("F j, Y, g:i a", $item->created_at) ?></div>
                                 <ul class="comment-actions">
-                                    <li class="reply">Reply</li>
+                                    <li class="reply" data-comment_id="<?= $item->id ?>"
+                                        data-nickname="<?= $item->nickname ?>">Reply
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -163,23 +172,35 @@
     var info_prompt = function (message, time) {
         prompt(message, 'alert-info', time);
     };
-    $("#contact-submit").click(function () {
-        if (!$("#contact-content").val()) {
-            warning_prompt('Message不能为空');
+
+    // 回复某人
+    $('.reply').click(function () {
+        $('#w0').append("<input type='hidden' id='comment-reply_to' name='Comment[reply_to]' value='" + $(this).attr('data-comment_id') + "'>");
+        $("#comment-content").val("@" + $(this).attr('data-nickname') + "  ");
+        $("#comment-nickname").focus()
+    });
+
+    // 发表评论
+    $("#comment-submit").click(function () {
+        if (!$("#comment-content").val()) {
+            warning_prompt('不能提交空表单！');
             return false;
         }
         $.ajax({
-            url: "<?= \yii\helpers\Url::to(['index/contact'])?>",
+            url: "<?= \yii\helpers\Url::to(['index/comment'])?>",
             type: "POST",
             dataType: "json",
             data: $('form').serialize(),
             success: function (data) {
                 if (data.status) {
                     $("input.form-control").val("");
-                    $("#contact-content").val("");
-                    success_prompt('提交成功，我会尽快回复你。')
+                    $("#comment-content").val("");
+                    success_prompt('发表评论成功，两秒后跳转。');
+                    setTimeout(function () {
+                        location.href = "<?=\yii\helpers\Url::toRoute(['index/article', 'id' => $article->id])?>";
+                    }, 2000);
                 } else {
-                    fail_prompt('提交失败了！你还可以通过页面底部的邮箱和我取得联系。')
+                    fail_prompt('发表评论失败！')
                 }
             },
             error: function () {
@@ -187,7 +208,7 @@
             }
         });
         return false;
-    })
+    });
 </script>
 
 

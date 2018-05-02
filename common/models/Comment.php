@@ -24,6 +24,7 @@ class Comment extends ActiveRecord
             ['email', 'email'],
             ['url', 'string'],
             ['content', 'string'],
+            ['reply_to', 'string'],
             // verifyCode needs to be entered correctly
 //            ['verifyCode', 'captcha'],
         ];

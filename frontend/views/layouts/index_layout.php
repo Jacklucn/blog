@@ -20,6 +20,7 @@ use yii\helpers\Url;
 
     <link rel="canonical" href="https://www.jacklucn.com/"/>
     <link rel="stylesheet" type="text/css" href="<?= Url::to('@web/css/style.css') ?>"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<?= Url::to('@web/images/IMG_0128.jpg') ?>">
 
     <title> Jacklucn </title>
 </head>

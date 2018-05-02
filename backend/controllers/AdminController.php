@@ -38,18 +38,18 @@ class AdminController extends Controller
      * @param \yii\base\Action $action
      * @return mixed
      */
-    public function beforeAction($action)
-    {
-        $path = \Yii::$app->request->pathInfo;
-        if (in_array($path, $this->ignoreList)) {
-            return true;
-        }
-        if (\Yii::$app->user->isGuest) {
-            return $this->redirect(['admin/login']);
-        } else {
-            return true;
-        }
-    }
+//    public function beforeAction($action)
+//    {
+//        $path = \Yii::$app->request->pathInfo;
+//        if (in_array($path, $this->ignoreList)) {
+//            return true;
+//        }
+//        if (\Yii::$app->user->isGuest) {
+//            return $this->redirect(['admin/login']);
+//        } else {
+//            return true;
+//        }
+//    }
 
     /**
      * 登录
@@ -193,6 +193,7 @@ class AdminController extends Controller
      */
     public function actionError()
     {
-        return $this->render('error');
+        $this->layout = false;
+        return $this->render('404');
     }
 }

@@ -14,7 +14,9 @@ use yii\helpers\Url;
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Startmin - Bootstrap Admin Theme</title>
+    <title>Jacklucn</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="<?= Url::to('@web/images/IMG_0128.jpg') ?>">
 
     <!-- Bootstrap Core CSS -->
     <link href="<?= Url::to('@web/css/admin/bootstrap.min.css') ?>" rel="stylesheet">
@@ -152,7 +154,7 @@ use yii\helpers\Url;
                     <i class="fa fa-user fa-fw"></i>
                     <?php if (Yii::$app->user->isGuest) { ?>
                         <script type="application/javascript">
-                            window.location = 'http://localhost/blog/backend/web/admin/login'
+                            window.location = 'http://admin.jacklucn.com/admin/login.html'
                         </script>
                     <?php } else { ?>
                         <?= Yii::$app->user->identity->username ?>
@@ -333,7 +335,7 @@ use yii\helpers\Url;
 
         function urlSubmit() {
             var url = $.trim($("#url").val());//获取会话中的隐藏属性URL
-            var url = 'https://x.masterspace.cn/index.php/Admin/Index/' + url;
+            // var url = 'https://x.masterspace.cn/index.php/Admin/Index/' + url;
             // var url = 'http://127.0.0.1/masterspace/index.php/Admin/index/' + url;
             window.location.href = url;
         }

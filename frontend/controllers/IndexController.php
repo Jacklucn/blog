@@ -146,6 +146,30 @@ class IndexController extends Controller
     }
 
     /**
+     * @return array
+     */
+    public function actionComment()
+    {
+        $model = new Comment();
+        if ($model->load(\Yii::$app->request->post())) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['status' => $model->save()];
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function actionCommentValidate()
+    {
+        $model = new Contact();
+        if (\Yii::$app->request->isAjax && $model->load(\Yii::$app->request->post())) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+    }
+
+    /**
      * @return string
      */
     public function actionNotFound()
