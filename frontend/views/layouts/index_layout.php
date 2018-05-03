@@ -19,6 +19,8 @@ use yii\helpers\Url;
     <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=2.6.0"/>
 
     <link rel="canonical" href="https://www.jacklucn.com/"/>
+    <link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/comment.css') ?>">
+    <link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/buttons.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= Url::to('@web/css/style.css') ?>"/>
     <link rel="shortcut icon" type="image/x-icon" href="<?= Url::to('@web/images/IMG_0128.jpg') ?>">
 

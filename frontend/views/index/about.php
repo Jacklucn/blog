@@ -7,10 +7,8 @@
             <div class="post-content">
                 <h1 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>ABOUT ME</h1>
                 <p>游戏玩家 自行车运动爱好者 </p>
-                <p>后端开发者</p>
+                <p>后端开发</p>
                 <!--                <p>PHP、JavaScript、Ruby on Rails、MySQL、Redis、memcached、Nginx、Apache、 macOS、Ubuntu</p>-->
-                <p>电影 音乐</p>
-                <p>总想着要出去走走 结果打开电脑一坐就是一整天</p>
                 <p>你可以通过下面的表单和我取得联系 我会在尽量短的时间内给你回复</p>
                 <h1 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>ABOUT BLOG</h1>
                 <p>Yii2框架 </p>
@@ -28,6 +26,9 @@
     </div>
 
     <div class="comments" id="comments" style="border-top: 1px solid #e6e6e6;padding-top: 30px">
+        <div style="margin-bottom: 2%">
+            <span>Your email address will not be published. Required fields are marked *</span>
+        </div>
         <div id="alert" class="alert"></div>
         <div class="comment-wrap">
             <div class="comment-block">
@@ -36,10 +37,10 @@
                     'enableAjaxValidation' => true,
                     'validationUrl' => \yii\helpers\Url::to(['index/contact-validate'])
                 ]) ?>
-                <?= $form->field($model, 'nickname')->inline(true)->textInput(['class' => 'form-control']) ?>
-                <?= $form->field($model, 'email')->textInput(['class' => 'form-control']) ?>
+                <?= $form->field($model, 'nickname')->inline(true)->textInput(['class' => 'form-control'])->label('Nickname *') ?>
+                <?= $form->field($model, 'email')->textInput(['class' => 'form-control'])->label('Email *') ?>
                 <?= $form->field($model, 'url')->textInput(['class' => 'form-control']) ?>
-                <?= $form->field($model, 'content')->textarea(['rows' => '4', 'cols' => '30'])->label('Message') ?>
+                <?= $form->field($model, 'content')->textarea(['rows' => '4', 'cols' => '30'])->label('Message *') ?>
                 <div class="form-group">
                     <input id="contact-submit" type="submit" value="contact"
                            class="button button-pill button-primary contact-submit">

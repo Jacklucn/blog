@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/comment.css') ?>">
-<link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/buttons.css') ?>">
 <div class="content-wrapper">
     <div id="content" class="content">
 
@@ -14,7 +12,7 @@
           2017-08-31
         </span>
                     <div class="post-category">
-                        <a href="/categories/tool/">
+                        <a href="javascript:;">
                             <?php foreach ($article->category as $category): ?>
                                 <?= $category->category_name->name . ' ' ?>
                             <?php endforeach; ?>
@@ -30,36 +28,36 @@
 
             <div class="post-content">
 
-                <p style="text-align: center"><img src="<?= $article['cover_image'] ?>" alt="Code Geass"></p>
+                <p><img src="<?= $article['cover_image'] ?>"></p>
 
                 <?= $article['content'] ?>
 
-                <!--            <div class="post-copyright">-->
-                <!--                <p class="copyright-item">-->
-                <!--                    <span>原文作者: </span>-->
-                <!--                    <a href="http://www.ahonn.me">Ahonn</a>-->
-                <!--                </p>-->
-                <!--                <p class="copyright-item">-->
-                <!--                    <span>原文链接: </span>-->
-                <!--                    <a href="http://www.ahonn.me/2017/08/31/starting-from-scratch-mac/">http://www.ahonn.me/2017/08/31/starting-from-scratch-mac/</a>-->
-                <!--                </p>-->
-                <!--                <p class="copyright-item">-->
-                <!--                    <span>许可协议: </span>-->
-                <!---->
-                <!--                    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用-->
-                <!--                        4.0 国际许可协议</a>-->
-                <!--                </p>-->
-                <!--            </div>-->
-
+<!--                <div class="post-copyright">-->
+<!--                    <p class="copyright-item">-->
+<!--                        <span>原文作者: </span>-->
+<!--                        <a href="http://www.ahonn.me">Ahonn</a>-->
+<!--                    </p>-->
+<!--                    <p class="copyright-item">-->
+<!--                        <span>原文链接: </span>-->
+<!--                        <a href="http://www.ahonn.me/2017/08/31/starting-from-scratch-mac/">http://www.ahonn.me/2017/08/31/starting-from-scratch-mac/</a>-->
+<!--                    </p>-->
+<!--                    <p class="copyright-item">-->
+<!--                        <span>许可协议: </span>-->
+<!---->
+<!--                        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用-->
+<!--                            4.0 国际许可协议</a>-->
+<!--                    </p>-->
+<!--                </div>-->
+            </div>
                 <footer class="post-footer">
 
-                    <!--                <div class="post-tags">-->
-                    <!---->
-                    <!--                    <a href="/tags/MacOS/">MacOS</a>-->
-                    <!---->
-                    <!--                    <a href="/tags/Chrome/">Chrome</a>-->
-                    <!---->
-                    <!--                </div>-->
+                    <div class="post-tags">
+
+                        <a href="javascript:;">MacOS</a>
+
+                        <a href="javascript:;">Chrome</a>
+
+                    </div>
 
                     <nav class="post-nav">
                         <?php if ($prev_article): ?>
@@ -81,54 +79,54 @@
         </article>
     </div>
 
-    <div class="comments" id="comments" style="border-top: 1px solid #e6e6e6;">
-        <div id="alert" class="alert"></div>
-        <div class="comments">
-            <div class="comment-wrap">
-                <div class="comment-block">
-                    <?php $form = \yii\bootstrap\ActiveForm::begin([
-                        'action' => \yii\helpers\Url::to(['index/comment']),
+    <div id="alert" class="alert"></div>
+    <div class="comments">
+        <div style="margin-bottom: 2%">
+            <span>Your email address will not be published. Required fields are marked *</span>
+        </div>
+        <div class="comment-wrap">
+            <div class="comment-block">
+                <?php $form = \yii\bootstrap\ActiveForm::begin([
+                    'action' => \yii\helpers\Url::to(['index/comment']),
 //                        'enableAjaxValidation' => true,
 //                        'validationUrl' => \yii\helpers\Url::to(['index/comment-validate'])
-                    ]) ?>
-                    <?= \yii\helpers\Html::activeHiddenInput($model, 'article_id', ['value' => $article->id]) ?>
-                    <?= $form->field($model, 'nickname')->inline(true)->textInput(['class' => 'form-control'])->label('* Nickname') ?>
-                    <?= $form->field($model, 'email')->textInput(['class' => 'form-control'])->label('* email') ?>
-                    <?= $form->field($model, 'url')->textInput(['class' => 'form-control']) ?>
-                    <?= $form->field($model, 'content')->textarea(['rows' => '4', 'cols' => '30'])->label('* content') ?>
-                    <div class="form-group">
-                        <input id="comment-submit" type="submit" value="发表评论"
-                               class="button button-pill button-primary contact-submit">
-                    </div>
-                    <?php \yii\bootstrap\ActiveForm::end() ?>
+                ]) ?>
+                <?= \yii\helpers\Html::activeHiddenInput($model, 'article_id', ['value' => $article->id]) ?>
+                <?= $form->field($model, 'nickname')->inline(true)->textInput(['class' => 'form-control'])->label('Nickname *') ?>
+                <?= $form->field($model, 'email')->textInput(['class' => 'form-control'])->label('Email *') ?>
+                <?= $form->field($model, 'url')->textInput(['class' => 'form-control']) ?>
+                <?= $form->field($model, 'content')->textarea(['rows' => '4', 'cols' => '30'])->label('Content *') ?>
+                <div class="form-group">
+                    <input id="comment-submit" type="submit" value="发表评论"
+                           class="button button-pill button-primary contact-submit">
                 </div>
+                <?php \yii\bootstrap\ActiveForm::end() ?>
             </div>
-
-            <?php if ($article->comments): ?>
-                <?php foreach ($article->comments as $item): ?>
-                    <div class="comment-wrap">
-                        <div class="photo">
-                            <div class="avatar"
-                                 style="background-image: url(<?= 'http://www.gravatar.com/avatar/' . md5($item->email) . '?s=32' ?>)">
-                            </div>
-                        </div>
-                        <div class="comment-block">
-                            <span><?= $item->nickname ?>：</span>
-                            <p class="comment-text"><?= $item->content ?></p>
-                            <div class="bottom-comment">
-                                <div class="comment-date"><?= date("F j, Y, g:i a", $item->created_at) ?></div>
-                                <ul class="comment-actions">
-                                    <li class="reply" data-comment_id="<?= $item->id ?>"
-                                        data-nickname="<?= $item->nickname ?>">Reply
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
         </div>
 
+        <?php if ($article->comments): ?>
+            <?php foreach ($article->comments as $item): ?>
+                <div class="comment-wrap">
+                    <div class="photo">
+                        <div class="avatar"
+                             style="background-image: url(<?= 'https://www.gravatar.com/avatar/' . md5($item->email) . '?s=32' ?>)">
+                        </div>
+                    </div>
+                    <div class="comment-block">
+                        <span><?= $item->nickname ?>：</span>
+                        <p class="comment-text"><?= $item->content ?></p>
+                        <div class="bottom-comment">
+                            <div class="comment-date"><?= date("F j, Y, g:i a", $item->created_at) ?></div>
+                            <ul class="comment-actions">
+                                <li class="reply" data-comment_id="<?= $item->id ?>"
+                                    data-nickname="<?= $item->nickname ?>">Reply
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 
 </div>

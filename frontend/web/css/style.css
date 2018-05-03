@@ -625,7 +625,7 @@ h6 {
 .post .post-content a {
     color: #c05b4d;
     word-break: break-all; }
-.post .post-content a:hover {
+.post-content a:hover {
     border-bottom: 1px solid #c05b4d; }
 .post .post-content a.fancybox {
     border: 0; }
@@ -1052,7 +1052,7 @@ h6 {
     color: #8a8a8a; }
 .archive .archive-post .archive-post-title .archive-post-link {
     color: #c05b4d; }
-.archive .archive-post::first-child {
+.archive .archive-post:first-child {
     margin-top: 10px; }
 .archive .archive-post:hover {
     border-left: 3px solid #c05b4d;

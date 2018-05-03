@@ -13,7 +13,7 @@
                                     <?= date('Y-m-d H:i:s', $article->created_at) ?>
                                 </span>
                             <div class="post-category">
-                                <a href="/categories/thinking/">
+                                <a href="#">
                                     <?php foreach ($article->category as $category): ?>
                                         <?= $category->category_name->name . ' ' ?>
                                     <?php endforeach; ?>
@@ -27,7 +27,7 @@
                     <div class="post-content">
                         <?= $article->summary ?>
                         <?php if ($article->cover_image): ?>
-                            <p style="text-align: center"><img src="<?= $article->cover_image ?>" alt="2017 commit"></p>
+                            <p style="text-align: center"><img src="<?= $article->cover_image ?>"></p>
                         <?php endif; ?>
                         <div class="read-more">
                             <a href="<?= \yii\helpers\Url::toRoute(['index/article', 'id' => $article->id]) ?>" class="read-more-link">阅读更多</a>
