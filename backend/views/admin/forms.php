@@ -20,6 +20,7 @@
             <?= \common\widgets\Alert::widget() ?>
             <?php $form = \yii\bootstrap\ActiveForm::begin() ?>
             <?= $form->field($model, 'title')->textInput(['class' => 'form-control'])->label('文章标题:') ?>
+            <?= $form->field($model, 'year')->hiddenInput(['value' => date('Y', time())])->label(false) ?>
             <?= $form->field($model, 'summary')->textInput(['class' => 'form-control'])->label('文章摘要:') ?>
             <?= $form->field($model, 'sort')->textInput(['class' => 'form-control', 'type' => 'number', 'value' => 99])->label('排序（排序规则1-99，小的在前面，不填则默认99）:') ?>
             <div class="form-group">

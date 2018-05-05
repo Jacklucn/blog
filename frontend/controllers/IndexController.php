@@ -48,6 +48,8 @@ class IndexController extends Controller
             ->offset($page->offset)
             ->limit($page->limit)
             ->alias('a')
+            ->where(['status' => 1])
+            ->orderBy(['a.created_at' => SORT_DESC])
             ->all();
         return $this->render('index', [
             'model' => $model,

@@ -19,7 +19,7 @@ class Article extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'summary', 'content', 'sort'], 'required'],
+            [['title', 'summary', 'content', 'sort', 'year'], 'required'],
             ['title', 'string', 'length' => [1, 15]],
             ['sort', 'integer', 'max' => 99, 'min' => 1],
             ['title', 'unique', 'targetClass' => '\backend\models\Article', 'message' => '已存在！'],

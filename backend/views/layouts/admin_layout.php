@@ -154,7 +154,7 @@ use yii\helpers\Url;
                     <i class="fa fa-user fa-fw"></i>
                     <?php if (Yii::$app->user->isGuest) { ?>
                         <script type="application/javascript">
-                            window.location = 'http://admin.jacklucn.com/admin/login.html'
+                            window.location = 'https://admin.jacklucn.com/admin/login'
                         </script>
                     <?php } else { ?>
                         <?= Yii::$app->user->identity->username ?>
@@ -235,7 +235,7 @@ use yii\helpers\Url;
                     <p>您确认要执行该操作吗？</p>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" id="url"/>
+                    <input type="hidden" id="params"/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <a onclick="urlSubmit()" class="btn btn-success" data-dismiss="modal">确定</a>
                 </div>
@@ -295,7 +295,7 @@ use yii\helpers\Url;
         <!-- simditor-mark JavaScript -->
         <script src="<?= Url::to('@web/simditor-mark/lib/simditor-mark.js') ?>"></script>
         <!-- simditor-autosave JavaScript -->
-        <script src="<?= Url::to('@web/simditor-autosave/lib/simditor-autosave.js') ?>"></script>
+        <!--        <script src="--><? //= Url::to('@web/simditor-autosave/lib/simditor-autosave.js') ?><!--"></script>-->
         <script type="application/javascript">
             var editor = new Simditor({
                 textarea: $('#editor'),
@@ -328,16 +328,29 @@ use yii\helpers\Url;
 
     <!-- 操作确认框 -->
     <script type="application/javascript">
-        function delcfm(url) {
-            $('#url').val(url);//给会话中的隐藏属性URL赋值
+        function delcfm(params) {
+            $('#params').val(params);
             $('#delcfmModel').modal();
         }
 
         function urlSubmit() {
-            var url = $.trim($("#url").val());//获取会话中的隐藏属性URL
-            // var url = 'https://x.masterspace.cn/index.php/Admin/Index/' + url;
-            // var url = 'http://127.0.0.1/masterspace/index.php/Admin/index/' + url;
-            window.location.href = url;
+            var params = $.trim($("#params").val());
+            params = params.split(",");
+            var csrfToken = "<?= Yii::$app->request->csrfToken ?>";
+            var data = {'_csrf-backend': csrfToken, id: '' + params[0] + '', status: '' + params[1] + ''};
+            $.ajax({
+                type: 'POST',
+                dataType: "json",
+                url: $(".operate").attr('data-action'),
+                data: data,
+                success: function (data) {
+                    if (data.code === 200) {
+                        window.location.href = "<?=Url::toRoute([\Yii::$app->request->pathInfo])?>"
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            });
         }
     </script>
 

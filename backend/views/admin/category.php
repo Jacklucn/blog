@@ -18,7 +18,7 @@
             </ol>
             <form role="form" action="<?= \yii\helpers\Url::to(['admin/category']) ?>" method="post">
                 <div class="form-group input-group">
-                    <input name="_csrf-frontend" type="hidden" id="_csrf-frontend"
+                    <input name="_csrf-backend" type="hidden" id="_csrf-backend"
                            value="<?= Yii::$app->request->csrfToken ?>">
                     <input type="text" class="form-control" name="Category[name]" placeholder="请输入标签名字">
                     <span class="input-group-btn">
@@ -52,7 +52,8 @@
                             <td><?= date("Y-m-d H:i:s", $item['created_at']) ?></td>
                             <td><?= date("Y-m-d H:i:s", $item['updated_at']) ?></td>
                             <td>
-                                <a class="btn btn-default" onClick="delcfm('deleteTag?id={$list.id}')">
+                                <a class="btn btn-default operate" onClick="delcfm('<?= $item['id'] . ',0' ?>')"
+                                   data-action="<?= \yii\helpers\Url::toRoute(['remove-category']) ?>">
                                     删除
                                 </a>
                             </td>

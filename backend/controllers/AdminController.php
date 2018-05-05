@@ -15,6 +15,7 @@ use common\models\Category;
 use common\models\LoginForm;
 use yii\data\Pagination;
 use yii\web\Controller;
+use yii\web\Response;
 
 class AdminController extends Controller
 {
@@ -103,6 +104,7 @@ class AdminController extends Controller
             ->offset($page->offset)
             ->limit($page->limit)
             ->alias('a')
+            ->orderBy(['a.created_at' => SORT_DESC])
             ->all();
         return $this->render('tables', [
             'model' => $model,
@@ -129,7 +131,7 @@ class AdminController extends Controller
             return $this->redirect(['category']);
         }
         $page = new Pagination(['totalCount' => $model::find()->count()]);
-        $list = $model::find()->offset($page->offset)->limit($page->limit)->all();
+        $list = $model::find()->offset($page->offset)->limit($page->limit)->orderBy(['created_at' => SORT_DESC])->all();
         return $this->render('category', [
             'model' => $model,
             'pages' => $page,
@@ -177,6 +179,49 @@ class AdminController extends Controller
             'model' => $model,
             'category_list' => $category_list
         ]);
+    }
+
+    /**
+     * 文章的隐藏和显示
+     * @return array
+     * @throws \yii\db\Exception
+     */
+    public function actionOperateArticle()
+    {
+        $id = \Yii::$app->request->post('id');
+        $status = \Yii::$app->request->post('status');
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        if (!isset($id) || !isset($status)) {
+            return ['code' => 109, 'message' => '错误的操作！'];
+        }
+        if (!\Yii::$app->db->createCommand()->update('article', ['status' => $status, 'updated_at' => time()], 'id = ' . $id)->execute()) {
+            return ['code' => 110, 'message' => '错误的操作！'];
+        }
+        \Yii::$app->session->setFlash('success', '文章操作成功！');
+        return ['code' => 200, 'message' => '操作成功'];
+    }
+
+    /**
+     * 对标签的操作（删除）
+     * @return array
+     * @throws \yii\db\Exception
+     */
+    public function actionRemoveCategory()
+    {
+        $id = \Yii::$app->request->post('id');
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        if (!isset($id)) {
+            return ['code' => 109, 'message' => '错误的操作！'];
+        }
+        if (ArticleCategoryAccess::find()->where(['category_id' => $id])->one()) {
+            \Yii::$app->session->setFlash('error', '删除失败，正在被应用的标签或分类不允许被删除。');
+            return ['code' => 200, 'message' => ''];
+        }
+        if (!\Yii::$app->db->createCommand()->delete('category', 'id = ' . $id)->execute()) {
+            return ['code' => 110, 'message' => '错误的操作！'];
+        }
+        \Yii::$app->session->setFlash('success', '标签删除成功！');
+        return ['code' => 200, 'message' => '操作成功'];
     }
 
     /**

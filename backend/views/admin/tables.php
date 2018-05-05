@@ -33,6 +33,7 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-12">
+            <?= \common\widgets\Alert::widget() ?>
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
                     <thead>
@@ -72,17 +73,15 @@
                             <td><?= $item['created_at'] ?></td>
                             <td><?= $item['updated_at'] ?></td>
                             <td>
-                                <a class="btn btn-default"
-                                   href="{:U('index/getCaseDetail',['id' => $list['id']])}">详情</a>
-                                <a class="btn btn-default" href="{:U('index/updateCase',['id' => $list['id']])}">编辑</a>
-                                <?php if ($item['status'] == 1){ ?>
-                                <a class="btn btn-default" onClick="delcfm('deleteCase?id={$list.id}&status=2')">
-                                    <?php echo '隐藏';
-                                    }else{ ?>
-                                    <a class="btn btn-default"
-                                       onClick="delcfm('deleteCase?id={$list.id}&status=1')">                                                               <?php echo '显示';
-                                        } ?>
-                                    </a>
+                                <a class="btn btn-default" href="<?php ?>">详情</a>
+                                <a class="btn btn-default" href="<?php ?>">编辑</a>
+                                <?php if ($item['status'] == 1): ?>
+                                    <a class="btn btn-default operate" onClick="delcfm('<?= $item['id'] . ',0' ?>')"
+                                       data-action="<?=\yii\helpers\Url::toRoute(['admin/operate-article'])?>">隐藏</a>
+                                <?php else: ?>
+                                    <a class="btn btn-default operate" onClick="delcfm('<?= $item['id'] . ',1' ?>')"
+                                       data-action="<?=\yii\helpers\Url::toRoute(['admin/operate-article'])?>"> 显示</a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
