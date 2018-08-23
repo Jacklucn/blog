@@ -70,17 +70,17 @@
                                     不显示
                                 <?php endif; ?>
                             </td>
-                            <td><?= $item['created_at'] ?></td>
-                            <td><?= $item['updated_at'] ?></td>
+                            <td><?= date('Y-m-d H:i:s', $item['created_at']) ?></td>
+                            <td><?= date('Y-m-d H:i:s', $item['updated_at']) ?></td>
                             <td>
-                                <a class="btn btn-default" href="<?php ?>">详情</a>
-                                <a class="btn btn-default" href="<?php ?>">编辑</a>
+                                <a class="btn btn-default"
+                                   href="<?= \yii\helpers\Url::toRoute(['admin/forms', 'id' => $item['id']]) ?>">编辑</a>
                                 <?php if ($item['status'] == 1): ?>
                                     <a class="btn btn-default operate" onClick="delcfm('<?= $item['id'] . ',0' ?>')"
-                                       data-action="<?=\yii\helpers\Url::toRoute(['admin/operate-article'])?>">隐藏</a>
+                                       data-action="<?= \yii\helpers\Url::toRoute(['admin/operate-article']) ?>">隐藏</a>
                                 <?php else: ?>
                                     <a class="btn btn-default operate" onClick="delcfm('<?= $item['id'] . ',1' ?>')"
-                                       data-action="<?=\yii\helpers\Url::toRoute(['admin/operate-article'])?>"> 显示</a>
+                                       data-action="<?= \yii\helpers\Url::toRoute(['admin/operate-article']) ?>"> 显示</a>
                                 <?php endif; ?>
                             </td>
                         </tr>

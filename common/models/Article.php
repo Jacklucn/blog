@@ -11,6 +11,10 @@ namespace common\models;
 
 use yii\db\ActiveRecord;
 
+/**
+ * Class Article
+ * @package common\models
+ */
 class Article extends ActiveRecord
 {
     /**
@@ -22,7 +26,7 @@ class Article extends ActiveRecord
             [['title', 'summary', 'content', 'sort', 'year'], 'required'],
             ['title', 'string', 'length' => [1, 15]],
             ['sort', 'integer', 'max' => 99, 'min' => 1],
-            ['title', 'unique', 'targetClass' => '\backend\models\Article', 'message' => '已存在！'],
+//            ['title', 'unique', 'targetClass' => '\backend\models\Article', 'message' => '已存在！'],
         ];
     }
 
@@ -42,7 +46,15 @@ class Article extends ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasMany(ArticleCategoryAccess::className(), ['article_id' => 'id'])->select('article_id,category_id');
+        return $this->hasMany(ArticleCategoryAccess::className(), ['article_id' => 'id'])->select('article_id,category_id')->distinct();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategoryIds()
+    {
+        return $this->hasMany(ArticleCategoryAccess::className(), ['article_id' => 'id'])->select('category_id')->asArray();
     }
 
     /**

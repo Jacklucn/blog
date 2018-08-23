@@ -13,9 +13,13 @@ use common\models\Article;
 use common\models\ArticleCategoryAccess;
 use common\models\Category;
 use common\models\LoginForm;
+use common\models\Upload;
+use phpDocumentor\Reflection\Types\Null_;
+use xj\uploadify\UploadAction;
 use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 class AdminController extends Controller
 {
@@ -24,6 +28,45 @@ class AdminController extends Controller
      * @var string
      */
     public $layout = 'admin_layout.php';
+
+    public function actions()
+    {
+        return [
+            's-upload' => [
+                'class' => UploadAction::className(),
+                'basePath' => '@webroot/upload',
+                'baseUrl' => '@web/upload',
+                'enableCsrf' => true, // default
+                'postFieldName' => 'Filedata', // default
+                //BEGIN CLOSURE BY TIME
+                'format' => function (UploadAction $action) {
+                    $fileext = $action->uploadfile->getExtension();
+                    $filehash = sha1(uniqid() . time());
+                    $p1 = substr($filehash, 0, 2);
+                    $p2 = substr($filehash, 2, 2);
+                    return "{$p1}/{$p2}/{$filehash}.{$fileext}";
+                },
+                //END CLOSURE BY TIME
+                'validateOptions' => [
+                    'extensions' => ['jpg', 'png'],
+                    'maxSize' => 1 * 1024 * 1024, //file size
+                ],
+                'beforeValidate' => function (UploadAction $action) {
+                    //throw new Exception('test error');
+                },
+                'afterValidate' => function (UploadAction $action) {
+                },
+                'beforeSave' => function (UploadAction $action) {
+                },
+                'afterSave' => function (UploadAction $action) {
+                    $action->output['fileUrl'] = $action->getWebUrl();
+                    $action->getFilename(); // "image/yyyymmddtimerand.jpg"
+                    $action->getWebUrl(); //  "baseUrl + filename, /upload/image/yyyymmddtimerand.jpg"
+                    $action->getSavePath(); // "/var/www/htdocs/upload/image/yyyymmddtimerand.jpg"
+                },
+            ],
+        ];
+    }
 
     /**
      * 忽略列表
@@ -139,44 +182,117 @@ class AdminController extends Controller
         ]);
     }
 
+    public function actionUpload()
+    {
+        $model = new Upload();
+        $uploadSuccessPath = "";
+        if (\Yii::$app->request->isPost) {
+            $model->coverImage = UploadedFile::getInstance($model, "coverImage");
+            //文件上传存放的目录
+            $dir = "../web/uploads/" . date("Ymd");
+            if (!is_dir($dir)) {
+                mkdir($dir);
+                chmod($dir, 777);
+            }
+            if ($model->validate('coverImage')) {
+                //文件名
+                $fileName = date("HiiHsHis") . $model->coverImage->baseName . "." . $model->coverImage->extension;
+                $dir = $dir . "/" . $fileName;
+                $model->coverImage->saveAs($dir);
+                $uploadSuccessPath = "/uploads/" . date("Ymd") . "/" . $fileName;
+            }
+        }
+        var_dump($uploadSuccessPath);
+    }
+
     /**
-     * @return string|\yii\web\Response
+     * 对文章的添加和修改
+     * @param int $id
+     * @return string|Response
+     * @throws \Exception
+     * @throws \Throwable
      * @throws \yii\db\Exception
+     * @throws \yii\db\StaleObjectException
      */
-    public function actionForms()
+    public function actionForms($id = 0)
     {
         $model = new Article();
         if (\Yii::$app->request->isPost) {
             $request = \Yii::$app->request;
             $session = \Yii::$app->session;
             $transaction = \Yii::$app->db->beginTransaction();
+            $id = $_POST['Article']['id'];
+            if ($id) {
+                $model = Article::findOne($id);
+            }
             if (!$model->load($request->post()) || !$model->save()) {
                 $transaction->rollBack();
-                $session->setFlash('error', '文章发布失败！');
+                $session->setFlash('error', '文章保存失败！');
                 return $this->redirect(['forms']);
             }
-            if ($request->post('category_ids')) {
-                $article_id = $model->id;
-                foreach ($request->post('category_ids') as $value) {
-                    $article_category_access_model = new ArticleCategoryAccess();
-                    $article_category_access_model->article_id = $article_id;
-                    $article_category_access_model->category_id = $value;
-                    $article_category_access_model->created_at = time();
-                    $article_category_access_model->updated_at = time();
-                    if (!$article_category_access_model->save()) {
-                        $transaction->rollBack();
-                        $session->setFlash('error', '文章发布失败！');
-                        return $this->redirect(['forms']);
+            $category_ids = $request->post('category_ids');
+            $access_model = new ArticleCategoryAccess();
+            $article_id = $model->id;
+            // 有选择标签且是修改文章的时候
+            if ($category_ids && $id) {
+                $access = $access_model->getAccessByArticleId($id);
+                // 文章已经有标签存在
+                if ($access) {
+                    // 删除取消选择的关系记录
+                    foreach ($access as $value) {
+                        if (!in_array($value['category_id'], $category_ids)) {
+                            $access = ArticleCategoryAccess::findOne($value['id']);
+                            if ($access && $access->delete()) {
+                                continue;
+                            } else {
+                                $transaction->rollBack();
+                                $session->setFlash('error', '文章保存失败！');
+                                return $this->redirect(['forms', 'id' => $id]);
+                            }
+                        }
                     }
+                }
+                // 删除处理完成之后再获取一次关系记录
+                $access = $access_model->getAccessByArticleId($id);
+                if ($access) {
+                    $access_category = array_column($access, 'category_id');
+                    foreach ($category_ids as $value) {
+                        // 判断如果当前关系不存在则添加
+                        if (!in_array($value, $access_category)) {
+                            $access_result = $access_model->saveAccess($article_id, $value);
+                            if (!$access_result) {
+                                $transaction->rollBack();
+                                $session->setFlash('error', '文章保存失败！');
+                                return $this->redirect(['forms', 'id' => $id]);
+                            }
+                        }
+                    }
+                    $transaction->commit();
+                    $session->setFlash('success', '文章保存成功！');
+                    return $this->redirect(['tables']);
+                }
+            }
+            // 文章目前没有任何标签的时候当作添加文章时处理
+            foreach ($request->post('category_ids') as $value) {
+                $access_result = $access_model->saveAccess($article_id, $value);
+                if (!$access_result) {
+                    $transaction->rollBack();
+                    $session->setFlash('error', '文章保存失败！');
+                    return $this->redirect(['forms']);
                 }
             }
             $transaction->commit();
-            $session->setFlash('success', '文章发布成功！');
+            $session->setFlash('success', '文章保存成功！');
             return $this->redirect(['tables']);
         }
         $category_list = Category::find()->asArray()->all();
+        $article = NULL;
+        if ($id) {
+            $article = Article::findOne($id);
+        }
         return $this->render('forms', [
             'model' => $model,
+            'article' => $article,
             'category_list' => $category_list
         ]);
     }

@@ -27,9 +27,19 @@ class ComposerStaticInitcd01f707bbf817f05ec3907aba669a90
             'yii\\bootstrap\\' => 14,
             'yii\\' => 4,
         ),
+        'x' => 
+        array (
+            'xj\\uploadify\\' => 13,
+        ),
         'p' => 
         array (
             'phpDocumentor\\Reflection\\' => 25,
+        ),
+        'k' => 
+        array (
+            'kartik\\plugins\\fileinput\\' => 25,
+            'kartik\\file\\' => 12,
+            'kartik\\base\\' => 12,
         ),
         'c' => 
         array (
@@ -112,11 +122,27 @@ class ComposerStaticInitcd01f707bbf817f05ec3907aba669a90
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
         ),
+        'xj\\uploadify\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/xj/yii2-uploadify-widget',
+        ),
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'kartik\\plugins\\fileinput\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/bootstrap-fileinput',
+        ),
+        'kartik\\file\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-fileinput',
+        ),
+        'kartik\\base\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-krajee-base',
         ),
         'cebe\\markdown\\' => 
         array (

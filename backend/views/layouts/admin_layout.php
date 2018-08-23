@@ -12,7 +12,7 @@ use yii\helpers\Url;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="jacklucn">
 
     <title>Jacklucn</title>
 
@@ -40,6 +40,7 @@ use yii\helpers\Url;
 
     <!-- Custom Fonts -->
     <link href="<?= Url::to('@web/css/admin/font-awesome.min.css') ?>" rel="stylesheet" type="text/css">
+    <link href="<?= Url::to('@web/css/admin/fileinput.css') ?>" rel="stylesheet" type="text/css">
 
     <?php
     $path = \Yii::$app->request->pathInfo;
@@ -154,7 +155,8 @@ use yii\helpers\Url;
                     <i class="fa fa-user fa-fw"></i>
                     <?php if (Yii::$app->user->isGuest) { ?>
                         <script type="application/javascript">
-                            window.location = 'https://admin.jacklucn.com/admin/login'
+                            // window.location = 'https://admin.jacklucn.com/admin/login'
+                            window.location = 'http://127.0.0.1/blog/backend/web/admin/login'
                         </script>
                     <?php } else { ?>
                         <?= Yii::$app->user->identity->username ?>
@@ -294,8 +296,6 @@ use yii\helpers\Url;
         <script type="text/javascript" src="<?= Url::to('@web/simditor/site/assets/scripts/simditor.js') ?>"></script>
         <!-- simditor-mark JavaScript -->
         <script src="<?= Url::to('@web/simditor-mark/lib/simditor-mark.js') ?>"></script>
-        <!-- simditor-autosave JavaScript -->
-        <!--        <script src="--><? //= Url::to('@web/simditor-autosave/lib/simditor-autosave.js') ?><!--"></script>-->
         <script type="application/javascript">
             var editor = new Simditor({
                 textarea: $('#editor'),

@@ -32,50 +32,48 @@
 
                 <?= $article['content'] ?>
 
-<!--                <div class="post-copyright">-->
-<!--                    <p class="copyright-item">-->
-<!--                        <span>原文作者: </span>-->
-<!--                        <a href="http://www.ahonn.me">Ahonn</a>-->
-<!--                    </p>-->
-<!--                    <p class="copyright-item">-->
-<!--                        <span>原文链接: </span>-->
-<!--                        <a href="http://www.ahonn.me/2017/08/31/starting-from-scratch-mac/">http://www.ahonn.me/2017/08/31/starting-from-scratch-mac/</a>-->
-<!--                    </p>-->
-<!--                    <p class="copyright-item">-->
-<!--                        <span>许可协议: </span>-->
-<!---->
-<!--                        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用-->
-<!--                            4.0 国际许可协议</a>-->
-<!--                    </p>-->
-<!--                </div>-->
+                <!--                <div class="post-copyright">-->
+                <!--                    <p class="copyright-item">-->
+                <!--                        <span>原文作者: </span>-->
+                <!--                        <a href="http://www.ahonn.me">Ahonn</a>-->
+                <!--                    </p>-->
+                <!--                    <p class="copyright-item">-->
+                <!--                        <span>原文链接: </span>-->
+                <!--                        <a href="http://www.ahonn.me/2017/08/31/starting-from-scratch-mac/">http://www.ahonn.me/2017/08/31/starting-from-scratch-mac/</a>-->
+                <!--                    </p>-->
+                <!--                    <p class="copyright-item">-->
+                <!--                        <span>许可协议: </span>-->
+                <!---->
+                <!--                        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用-->
+                <!--                            4.0 国际许可协议</a>-->
+                <!--                    </p>-->
+                <!--                </div>-->
             </div>
-                <footer class="post-footer">
+            <footer class="post-footer">
 
-                    <div class="post-tags">
+                <div class="post-tags">
 
-                        <a href="javascript:;">MacOS</a>
+                    <a href="javascript:;">MacOS</a>
 
-                        <a href="javascript:;">Chrome</a>
+                    <a href="javascript:;">Chrome</a>
 
-                    </div>
+                </div>
 
-                    <nav class="post-nav">
-                        <?php if ($prev_article): ?>
-                            <a class="prev"
-                               href="<?= \yii\helpers\Url::toRoute(['index/article', 'id' => $prev_article['id']]) ?>">
-                                <i class="iconfont icon-left"></i>
-                                <span class="prev-text nav-default"><?= $prev_article['title'] ?></span>
-                                <span class="prev-text nav-mobile">上一篇</span>
-                            </a>
-                        <?php endif; ?>
-                        <a class="next"
-                           href="<?= \yii\helpers\Url::toRoute(['index/article', 'id' => $next_article['id']]) ?>">
-                            <span class="next-text nav-default"><?= $next_article['title'] ?></span>
-                            <span class="prev-text nav-mobile">下一篇</span>
-                            <i class="iconfont icon-right"></i>
-                        </a>
-                    </nav>
-                </footer>
+                <nav class="post-nav">
+                    <a class="prev"
+                       href="<?= $page['prev_article']['url'] ?>">
+                        <i class="iconfont icon-left"></i>
+                        <span class="prev-text nav-default"><?= $page['prev_article']['title'] ?></span>
+                        <span class="prev-text nav-mobile">上一篇</span>
+                    </a>
+                    <a class="next"
+                       href="<?= $page['next_article']['url'] ?>">
+                        <span class="next-text nav-default"><?= $page['next_article']['title'] ?></span>
+                        <span class="prev-text nav-mobile">下一篇</span>
+                        <i class="iconfont icon-right"></i>
+                    </a>
+                </nav>
+            </footer>
         </article>
     </div>
 

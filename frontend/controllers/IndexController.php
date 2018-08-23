@@ -14,6 +14,7 @@ use common\models\Comment;
 use common\models\Contact;
 use yii\bootstrap\ActiveForm;
 use yii\data\Pagination;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
 
@@ -73,21 +74,31 @@ class IndexController extends Controller
         $prev_article = $model::find()
             ->select('id,title')
             ->where(['status' => '1'])
-            ->andwhere(['<', 'id', $id])
-            ->orderBy(['id' => SORT_DESC])
+            ->andwhere(['>', 'id', $id])
+            ->orderBy(['id' => SORT_ASC])
             ->limit(1)
+            ->asArray()
             ->one();
         $next_article = $model::find()
             ->select('id,title')
             ->where(['status' => '1'])
-            ->andwhere(['>', 'id', $id])
-            ->orderBy(['id' => SORT_ASC])
+            ->andwhere(['<', 'id', $id])
+            ->orderBy(['id' => SORT_DESC])
             ->limit(1)
+            ->asArray()
             ->one();
+        $page['prev_article'] = [
+            'url' => !$prev_article ? 'javascript:;' : Url::current(['id' => $prev_article['id']]),
+            'title' => !$prev_article ? '没有了' : $prev_article['title'],
+        ];
+
+        $page['next_article'] = [
+            'url' => !$next_article ? 'javascript:;' : Url::current(['id' => $next_article['id']]),
+            'title' => !$next_article ? '没有了' : $next_article['title'],
+        ];
         return $this->render('article', [
             'article' => $article,
-            'prev_article' => $prev_article,
-            'next_article' => $next_article,
+            'page' => $page,
             'model' => new Comment()
         ]);
     }

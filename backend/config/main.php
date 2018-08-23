@@ -13,6 +13,11 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => false,
+            ],
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
