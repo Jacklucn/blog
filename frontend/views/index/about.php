@@ -6,10 +6,9 @@
         <article class="post">
             <div class="post-content">
                 <h1 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>ABOUT ME</h1>
-                <p>游戏玩家 自行车运动爱好者 </p>
                 <p>后端开发</p>
                 <!--                <p>PHP、JavaScript、Ruby on Rails、MySQL、Redis、memcached、Nginx、Apache、 macOS、Ubuntu</p>-->
-                <p>你可以通过下面的表单和我取得联系</p>
+                <p>你可以通过下面的表单和我取得联系 </p>
                 <h1 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>ABOUT BLOG</h1>
                 <p>Yii2框架 </p>
                 <p>源代码在这里 <a href="https://github.com/Jacklucn/blog" target="_blank" rel="noopener">@jacklucn/blog</a>
