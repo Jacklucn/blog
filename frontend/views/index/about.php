@@ -12,7 +12,6 @@
                 <p>你可以通过下面的表单和我取得联系 我会在尽量短的时间内给你回复</p>
                 <h1 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>ABOUT BLOG</h1>
                 <p>Yii2框架 </p>
-                <p>服务器在这里 <a href="https://layerpanel.cloud/aff.php?aff=93" target="_blank" rel="noopener">@优惠链接</a>
                 <p>源代码在这里 <a href="https://github.com/Jacklucn/blog" target="_blank" rel="noopener">@jacklucn/blog</a>
                 </p>
                 <p>页面是在这里抠的 <a href="http://www.ahonn.me/" target="_blank" rel="noopener">@ahonn</a></p>
