@@ -54,6 +54,20 @@ class SiteController extends Controller
     }
 
     /**
+     * 限制未登录用户访问此控制器
+     * @param $action
+     * @return bool|\yii\web\Response
+     */
+    public function beforeAction($action)
+    {
+        if (\Yii::$app->user->isGuest) {
+            return $this->redirect(['admin/login']);
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Displays homepage.
      *
      * @return string
