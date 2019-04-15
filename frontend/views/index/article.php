@@ -111,7 +111,7 @@
                         </div>
                     </div>
                     <div class="comment-block">
-                        <span><?= $item->nickname ?>：</span>
+                        <strong><span><?= $item->nickname ?></span></strong>
                         <p class="comment-text"><?= $item->content ?></p>
                         <div class="bottom-comment">
                             <div class="comment-date"><?= date("F j, Y, g:i a", $item->created_at) ?></div>
