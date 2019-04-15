@@ -135,7 +135,7 @@ class IndexController extends Controller
 
     /**
      * 联系我
-     * @return array
+     * @return array|bool
      */
     public function actionContact()
     {
@@ -144,10 +144,11 @@ class IndexController extends Controller
             \Yii::$app->response->format = Response::FORMAT_JSON;
             return ['status' => $model->save()];
         }
+        return false;
     }
 
     /**
-     * @return array
+     * @return array|bool
      */
     public function actionContactValidate()
     {
@@ -156,10 +157,11 @@ class IndexController extends Controller
             \Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }
+        return false;
     }
 
     /**
-     * @return array
+     * @return array|bool
      */
     public function actionComment()
     {
@@ -168,10 +170,11 @@ class IndexController extends Controller
             \Yii::$app->response->format = Response::FORMAT_JSON;
             return ['status' => $model->save()];
         }
+        return false;
     }
 
     /**
-     * @return array
+     * @return array|bool
      */
     public function actionCommentValidate()
     {
@@ -180,6 +183,7 @@ class IndexController extends Controller
             \Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }
+        return false;
     }
 
     /**
