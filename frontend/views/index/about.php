@@ -7,13 +7,11 @@
             <div class="post-content">
                 <h1 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>ABOUT ME</h1>
                 <p>后端开发</p>
-                <!--                <p>PHP、JavaScript、Ruby on Rails、MySQL、Redis、memcached、Nginx、Apache、 macOS、Ubuntu</p>-->
                 <p>你可以通过下面的表单和我取得联系 </p>
                 <h1 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>ABOUT BLOG</h1>
                 <p>Yii2框架 </p>
                 <p>源代码在这里 <a href="https://github.com/Jacklucn/blog" target="_blank" rel="noopener">@jacklucn/blog</a>
                 </p>
-                <p>页面是在这里抠的 <a href="http://www.ahonn.me/" target="_blank" rel="noopener">@ahonn</a></p>
                 <h2 id="其他地方"><a href="#其他地方" class="headerlink" title="其他地方"></a>FIND ME IN OTHER PLACES</h2>
                 <ul>
                     <li>Github: <a href="https://github.com/jacklucn" target="_blank" rel="noopener">@jacklucn</a></li>
@@ -90,7 +88,7 @@
     };
     $("#contact-submit").click(function () {
         if(!$("#contact-content").val()){
-            warning_prompt('Message不能为空');
+            warning_prompt('Message 不能为空');
             return false;
         }
         $.ajax({
@@ -102,9 +100,9 @@
                 if (data.status) {
                     $("input.form-control").val("");
                     $("#contact-content").val("");
-                    success_prompt('提交成功，我会尽快回复你。')
+                    success_prompt('提交成功！我会尽快回复你。')
                 } else {
-                    fail_prompt('提交失败了！你还可以通过页面底部的邮箱和我取得联系。')
+                    fail_prompt('提交失败！可通过页面底部邮箱和我取得联系。')
                 }
             },
             error: function () {

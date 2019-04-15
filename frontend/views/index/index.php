@@ -29,7 +29,7 @@
                         <?php if ($article->cover_image): ?>
                             <p style="text-align: center"><img src="<?= $article->cover_image ?>"></p>
                         <?php endif; ?>
-                        <div class="read-more">
+                        <div class="read-more" style="margin-top: 2%">
                             <a href="<?= \yii\helpers\Url::toRoute(['index/article', 'id' => $article->id]) ?>" class="read-more-link">阅读更多</a>
                         </div>
                     </div>
