@@ -17,6 +17,81 @@
                     <i class="fa fa-edit fa-fw"></i> 发布文章
                 </li>
             </ol>
+
+            <?php $form = \yii\widgets\ActiveForm::begin([
+                'options' => [
+                    'class' => 'form-horizontal',
+                ],
+                'fieldConfig' => [
+//            'template' => "<div class='row'><div class='col-lg-1 text-right text-fixed'>{label}</div><div class='col-lg-9'>{input}</div><div class='col-lg-2 errors'>{error}</div></div>",
+                ]
+            ]); ?>
+
+            <?= $form->field($model, 'image_id')->hiddenInput()->label(false); ?>
+
+            <?= $form->field($upload, 'imageFile')->widget(\kartik\file\FileInput::class, [
+                'options' => [
+                    'accept' => 'images/*',
+                    'module' => 'Goods',
+                    'multipe' => false,
+                ],
+                'pluginOptions' => [
+                    // 异步上传的接口地址设置
+                    'uploadUrl' => \yii\helpers\Url::to(['upload']),
+                    'uploadAsync' => true,
+                    // 异步上传需要携带的其他参数，比如商品id等,可选
+                    'uploadExtraData' => [
+                        'model' => 'goods'
+                    ],
+                    // 需要预览的文件格式
+                    'previewFileType' => 'image',
+                    // 预览的文件
+                    'initialPreview' => $p1 ?: '',
+                    // 需要展示的图片设置，比如图片的宽度等
+                    'initialPreviewConfig' => $p2 ?: '',
+                    // 是否展示预览图
+                    'initialPreviewAsData' => true,
+                    // 最少上传的文件个数限制
+                    'minFileCount' => 1,
+                    // 最多上传的文件个数限制,需要配置`'multipe'=>true`才生效
+                    'maxFileCount' => 10,
+                    // 是否显示移除按钮，指input上面的移除按钮，非具体图片上的移除按钮
+                    'showRemove' => false,
+                    // 是否显示上传按钮，指input上面的上传按钮，非具体图片上的上传按钮
+                    'showUpload' => true,
+                    //是否显示[选择]按钮,指input上面的[选择]按钮,非具体图片上的上传按钮
+                    'showBrowse' => true,
+                    // 展示图片区域是否可点击选择多文件
+                    'browseOnZoneClick' => true,
+                    // 如果要设置具体图片上的移除、上传和展示按钮，需要设置该选项
+                    'fileActionSettings' => [
+                        // 设置具体图片的查看属性为false,默认为true
+                        'showZoom' => true,
+                        // 设置具体图片的上传属性为true,默认为true
+                        'showUpload' => true,
+                        // 设置具体图片的移除属性为true,默认为true
+                        'showRemove' => true,
+                    ],
+                ],
+                //网上很多地方都没详细说明回调触发事件，其实fileupload为上传成功后触发的，三个参数，主要是第二个，有formData，jqXHR以及response参数，上传成功后返回的ajax数据可以在response获取
+                'pluginEvents' => [
+                    'fileuploaded' => "function (object,data){ 
+				$('.field-goods-name').show().find('input').val(data.response.imageId);
+			}",
+                    //错误的冗余机制
+                    'error' => "function (){
+				alert('图片上传失败');
+			}"
+                ]
+            ]); ?>
+
+
+            <div class="form-group">
+                <?= \yii\helpers\Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            </div>
+
+            <?php \yii\widgets\ActiveForm::end(); ?>
+
             <?= \common\widgets\Alert::widget() ?>
             <?php $form = \yii\bootstrap\ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
             <?php if ($article) : ?>
@@ -42,14 +117,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>请选择封面图:</label>
-                    <a href="javascript:;" class="cover_image">
-                        <input type="file" name="file" id="file" class="inputfile"
-                               data-multiple-caption="{count} files selected" multiple/>
-                    </a>
-                </div>
-
-                <div class="form-group">
                     <label>文章内容:</label>
                     <textarea id="editor" placeholder="Balabala" data-autosave="editor-content" class="form-control"
                               name="Article[content]"><?= $article['content'] ?></textarea>
@@ -67,13 +134,6 @@
                             <input type="checkbox" value="<?= $item['id'] ?>" name="category_ids[]"><?= $item['name'] ?>
                         </label>
                     <?php endforeach; ?>
-                </div>
-
-                <div class="form-group">
-                    <a href="javascript:;" class="cover_image">
-                        <input id="file" class="filepath" onchange="changepic(this)" type="file">上传封面图<br>
-                        <img src="" id="show" style="max-height: 80px; max-width: 80px" class="tmp-img">
-                    </a>
                 </div>
 
                 <div class="form-group">

@@ -930,24 +930,24 @@
     },
     {
         "name": "kartik-v/yii2-widget-fileinput",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
+        "version": "v1.0.6",
+        "version_normalized": "1.0.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/kartik-v/yii2-widget-fileinput.git",
-            "reference": "c5495641c8a86690713eb562e544bf5eaaf727cb"
+            "reference": "d2c8dcde1aa69ac0c4a0e3b3cfc0d79b3cc2a550"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/kartik-v/yii2-widget-fileinput/zipball/c5495641c8a86690713eb562e544bf5eaaf727cb",
-            "reference": "c5495641c8a86690713eb562e544bf5eaaf727cb",
+            "url": "https://api.github.com/repos/kartik-v/yii2-widget-fileinput/zipball/d2c8dcde1aa69ac0c4a0e3b3cfc0d79b3cc2a550",
+            "reference": "d2c8dcde1aa69ac0c4a0e3b3cfc0d79b3cc2a550",
             "shasum": ""
         },
         "require": {
             "kartik-v/bootstrap-fileinput": "~4.4",
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2017-12-06T12:34:31+00:00",
+        "time": "2017-05-25T20:12:30+00:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1798,7 +1798,8 @@
         "keywords": [
             "mock",
             "xunit"
-        ]
+        ],
+        "abandoned": true
     },
     {
         "name": "psr/http-message",
