@@ -14,6 +14,8 @@ use yii\helpers\Url;
     <meta name="description" content="">
     <meta name="author" content="jacklucn">
 
+    <meta name="google-site-verification" content="5dJ1r-gKi1VwcE-TC0zyOLfaam9z1OW2FmeT3SBhWio" />
+
     <title>Jacklucn</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="<?= Url::to('@web/images/IMG_0128.jpg') ?>">
@@ -155,8 +157,7 @@ use yii\helpers\Url;
                     <i class="fa fa-user fa-fw"></i>
                     <?php if (Yii::$app->user->isGuest) { ?>
                         <script type="application/javascript">
-                            // window.location = 'https://admin.jacklucn.com/admin/login'
-                            window.location = 'http://127.0.0.1/blog/backend/web/admin/login'
+                            window.location = 'https://admin.jacklucn.com/admin/login'
                         </script>
                     <?php } else { ?>
                         <?= Yii::$app->user->identity->username ?>

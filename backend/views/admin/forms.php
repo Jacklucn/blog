@@ -43,6 +43,10 @@
                 </div>
 
                 <div class="form-group">
+                    <?= $form->field($model, 'cover_image')->fileInput()->label('封面图：') ?>
+                </div>
+
+                <div class="form-group">
                     <label>文章内容:</label>
                     <textarea id="editor" placeholder="Balabala" data-autosave="editor-content" class="form-control"
                               name="Article[content]"><?= $article['content'] ?></textarea>
@@ -60,6 +64,10 @@
                             <input type="checkbox" value="<?= $item['id'] ?>" name="category_ids[]"><?= $item['name'] ?>
                         </label>
                     <?php endforeach; ?>
+                </div>
+
+                <div class="form-group">
+                    <?= $form->field($model, 'cover_image')->fileInput()->label('封面图：') ?>
                 </div>
 
                 <div class="form-group">
